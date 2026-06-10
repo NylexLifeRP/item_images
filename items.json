@@ -1,15 +1,36 @@
 [
   {
-    "id":"-1",
+    "id":"21965",
     "name":"nycoin",
-    "full_name":"nycoin",
+    "full_name":"Nycoin",
     "description":"",
     "icon":"https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/unobs/nycoin/Nycoin_Unobtainables_21965.png",
     "catagory":"nycoin",
+    "tags":["unobtainable","farming"],
+    "release_date":"00/00/0000",
     "type":"structure",
-    "unobtainable":true,
-    "protection":0.0,
-    "blast_protection":0.0,
-    "speed":0.0
+    "stats":{
+      "protection":0.0,
+      "blast_protection":0.0,
+      "speed":0.0,
+      "grow_time":86400
+    }
+  },
+  {
+    "id":"22529",
+    "name":"shard",
+    "full_name":"Shard",
+    "description":"",
+    "icon":"https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/unobs/other/Shards_22529.png",
+    "catagory":"nycoin",
+    "tags":["unobtainable"],
+    "release_date":"00/00/0000",
+    "type":"structure",
+    "stats":{
+      "protection":0.0,
+      "blast_protection":0.0,
+      "speed":0.0,
+      "grow_time":0
+    }
   }
 ]
