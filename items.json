@@ -1,1 +1,14 @@
-{}
+[
+  {
+    "name":"nycoin",
+    "full_name":"nycoin",
+    "description":"",
+    "icon":"https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/unobs/nycoin/Nycoin_Unobtainables_21965.png",
+    "catagory":"nycoin",
+    "type":"structure",
+    "unobtainable":true,
+    "protection":0.0,
+    "blast_protection":0.0,
+    "speed":0.0
+  }
+]
