@@ -3,437 +3,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RP Item Manager Pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Cloudflare Style RP Item Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1f2937; }
-        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f0f11; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen font-sans p-6">
+<body class="bg-[#0f0f11] text-[#f4f4f5] min-h-screen flex flex-col antialiased">
 
-    <div class="max-w-7xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-center bg-gray-900 p-6 rounded-xl shadow-2xl border border-gray-800 mb-6 gap-4">
-            <div>
-                <h1 class="text-2xl font-bold text-indigo-400 tracking-wide flex items-center gap-2">⚔️ Nylex RP Item Suite</h1>
-                <p class="text-gray-400 text-sm mt-1">Mass produce, browse, modify, and update item JSON data nodes live.</p>
-            </div>
-            <div class="flex flex-wrap gap-3 justify-center">
-                <button id="loadLatest" class="bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center gap-2 cursor-pointer">
-                    🔄 Load Latest
-                </button>
-                <label class="bg-gray-800 hover:bg-gray-700 text-white font-medium px-4 py-2 rounded-lg cursor-pointer transition shadow-md flex items-center gap-2 border border-gray-700">
-                    📂 Import JSON
-                    <input type="file" id="importJson" accept=".json" class="hidden">
-                </label>
-                <button id="exportJson" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2 rounded-lg transition shadow-md flex items-center gap-2 cursor-pointer">
-                    💾 Export JSON
-                </button>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            
-            <form id="itemForm" class="lg:col-span-5 bg-gray-900 p-6 rounded-xl border border-gray-800 shadow-2xl space-y-4 lg:sticky lg:top-6 max-h-[88vh] overflow-y-auto">
-                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-                    <h2 id="formTitle" class="text-lg font-bold text-indigo-400">Create New Entry</h2>
-                    <button type="button" id="cancelEditBtn" class="hidden text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-2.5 py-1 rounded border border-gray-700 cursor-pointer">Cancel Edit</button>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Item ID *</label>
-                        <input type="text" id="itemId" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Item Type *</label>
-                        <input type="text" id="itemType" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">System Name *</label>
-                        <input type="text" id="itemName" placeholder="e.g. nycoin" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Full/UI Name *</label>
-                        <input type="text" id="itemFullName" placeholder="e.g. Nycoin" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Category *</label>
-                        <input type="text" id="itemCategory" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Release Date</label>
-                        <input type="text" id="itemRelease" placeholder="00/00/0000" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Icon Source URL</label>
-                    <input type="url" id="itemIcon" placeholder="https://raw.githubusercontent.com/..." class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-xs text-white focus:outline-none focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Description</label>
-                    <textarea id="itemDescription" rows="2" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Tags (Comma Separated)</label>
-                    <input type="text" id="itemTags" placeholder="unobtainable, christmas, farming" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
-                </div>
-
-                <div class="bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">Buy Price</label>
-                        <input type="number" id="buyPrice" value="-1" class="w-full bg-gray-900 border border-gray-800 rounded p-1.5 text-sm font-mono text-white">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Sell Price</label>
-                        <input type="number" id="sellPrice" value="-1" class="w-full bg-gray-900 border border-gray-800 rounded p-1.5 text-sm font-mono text-white">
-                    </div>
-                </div>
-
-                <div class="space-y-2 border-t border-gray-800 pt-3">
-                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
-                        <input type="checkbox" id="includeCore" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
-                        Include Base Core Stats Block
-                    </label>
-                    <div id="coreFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-3 gap-2 text-xs">
-                        <div>
-                            <label class="block text-gray-400 mb-0.5">Protection</label>
-                            <input type="number" step="0.1" id="statProt" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-0.5">Blast Prot.</label>
-                            <input type="number" step="0.1" id="statBlast" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400 mb-0.5">Speed Mod.</label>
-                            <input type="number" step="0.1" id="statSpeed" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
-                        <input type="checkbox" id="includeFarming" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
-                        Include Farming / Growth Settings
-                    </label>
-                    <div id="farmingFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 space-y-2 text-xs">
-                        <div>
-                            <label class="block text-gray-400 mb-0.5">Grow Duration Time (Seconds)</label>
-                            <input type="number" id="farmGrow" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1 font-mono">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-gray-400 mb-0.5">Harvest Yield / Drops</label>
-                                <input type="text" id="farmYield" placeholder="e.g. nycoin_shard" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                            </div>
-                            <div>
-                                <label class="block text-gray-400 mb-0.5">Obtained From</label>
-                                <input type="text" id="farmSource" placeholder="e.g. seed_planter" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
-                        <input type="checkbox" id="includeDamage" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
-                        Include Body Damage Profiles
-                    </label>
-                    <div id="damageFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-4 gap-2 text-xs">
-                        <div>
-                            <label class="block text-gray-400">Head</label>
-                            <input type="number" id="dmgHead" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400">Body</label>
-                            <input type="number" id="dmgBody" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400">Legs</label>
-                            <input type="number" id="dmgLegs" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400">Hands</label>
-                            <input type="number" id="dmgHands" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
-                        <input type="checkbox" id="includeInv" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
-                        Include Internal Inventory Layout
-                    </label>
-                    <div id="invFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-3 gap-2 text-xs">
-                        <div>
-                            <label class="block text-gray-400">Total Slots</label>
-                            <input type="number" id="invSlots" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400">Grid Width X</label>
-                            <input type="number" id="invX" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400">Grid Height Y</label>
-                            <input type="number" id="invY" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" id="submitFormBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition shadow-md cursor-pointer text-sm tracking-wide">
-                    ➕ Add Entry To Active Dataset
-                </button>
-            </form>
-
-            <div class="lg:col-span-7 bg-gray-900 p-6 rounded-xl border border-gray-800 shadow-2xl flex flex-col max-h-[88vh]">
-                
-                <div class="border-b border-gray-800 pb-4 mb-4 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
-                            Active Records (<span id="itemCount">0</span>)
-                        </h2>
-                        <button id="clearAll" class="text-xs text-red-400 hover:text-red-300 transition font-medium cursor-pointer">Purge Matrix</button>
-                    </div>
-                    
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">🔍</span>
-                        <input type="text" id="searchBar" placeholder="Search item repository by ID, metadata matching name, tags, description..." class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 placeholder-gray-600">
-                    </div>
-                </div>
-                
-                <div id="itemList" class="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 align-top content-start">
-                    <div id="emptyState" class="col-span-full text-center text-gray-600 py-16 text-sm">
-                        No active records match the criteria. Import database structures, fetch source metadata, or utilize the builder tool to begin production.
-                    </div>
-                </div>
-            </div>
-
+    <nav class="bg-[#18181b] border-b border-[#27272a] px-6 py-3 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="bg-[#f38020] text-black font-black p-1.5 rounded text-xs uppercase tracking-wider">Console</div>
+            <h1 class="text-sm font-semibold tracking-wide text-[#f4f4f5]">Nylex RP / Item Management</h1>
         </div>
-    </div>
+        <div class="flex items-center gap-2">
+            <button id="loadLatest" class="bg-[#27272a] hover:bg-[#3f3f46] text-[#f4f4f5] text-xs font-medium px-3 py-1.5 rounded transition border border-[#3f3f46] flex items-center gap-1.5 cursor-pointer">
+                🔄 Load Latest
+            </button>
+            <label class="bg-[#27272a] hover:bg-[#3f3f46] text-[#f4f4f5] text-xs font-medium px-3 py-1.5 rounded transition border border-[#3f3f46] flex items-center gap-1.5 cursor-pointer">
+                📂 Import JSON
+                <input type="file" id="importJson" accept=".json" class="hidden">
+            </label>
+            <button id="exportJson" class="bg-[#f38020] hover:bg-[#fa923e] text-black text-xs font-bold px-3 py-1.5 rounded transition flex items-center gap-1.5 cursor-pointer">
+                💾 Export JSON
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-4rem)] overflow-hidden">
+        
+        <form id="itemForm" class="lg:col-span-5 bg-[#18181b] border border-[#27272a] rounded-lg p-5 flex flex-col h-full space-y-4 overflow-y-auto shadow-xl">
+            <div class="flex justify-between items-center border-b border-[#27272a] pb-3 shrink-0">
+                <h2 id="formTitle" class="text-sm font-semibold text-[#f4f4f5] uppercase tracking-wider">Create Profile</h2>
+                <button type="button" id="cancelEditBtn" class="hidden text-xs bg-[#27272a] hover:bg-[#3f3f46] text-[#a1a1aa] px-2 py-1 rounded border border-[#3f3f46] cursor-pointer">Cancel Route</button>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Item ID</label>
+                    <input type="text" id="itemId" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Item Type</label>
+                    <input type="text" id="itemType" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">System Name</label>
+                    <input type="text" id="itemName" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Full / UI Display Name</label>
+                    <input type="text" id="itemFullName" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Category Grouping</label>
+                    <input type="text" id="itemCategory" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Release Protocol Date</label>
+                    <input type="text" id="itemRelease" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Asset Link (Icon URL)</label>
+                <input type="url" id="itemIcon" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-xs text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Summary Description</label>
+                <textarea id="itemDescription" rows="2" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020] resize-none"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Global Tags (Comma Delimited)</label>
+                <input type="text" id="itemTags" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+            </div>
+
+            <div class="bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[10px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">System Buy Price</label>
+                    <input type="number" id="buyPrice" value="-1" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1.5 text-sm font-mono text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">System Sell Price</label>
+                    <input type="number" id="sellPrice" value="-1" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1.5 text-sm font-mono text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                </div>
+            </div>
+
+            <div class="space-y-3 border-t border-[#27272a] pt-4">
+                
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
+                        <input type="checkbox" id="includeCore" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
+                        Include Core Combat Attributes
+                    </label>
+                    <div id="coreFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-3 text-xs">
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Protection</label>
+                            <input type="number" step="0.1" id="statProt" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Blast Prot.</label>
+                            <input type="number" step="0.1" id="statBlast" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Speed Modifier</label>
+                            <input type="number" step="0.1" id="statSpeed" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
+                        <input type="checkbox" id="includeFarming" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
+                        Include Cultivation & Farming Node
+                    </label>
+                    <div id="farmingFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] space-y-3 text-xs">
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Growth Duration Metric (Seconds)</label>
+                            <input type="number" id="farmGrow" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 font-mono text-[#f4f4f5]">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[#a1a1aa] mb-1">Harvest Drop Yield Node</label>
+                                <input type="text" id="farmYield" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            </div>
+                            <div>
+                                <label class="block text-[#a1a1aa] mb-1">Extraction Source Origin</label>
+                                <input type="text" id="farmSource" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
+                        <input type="checkbox" id="includeDamage" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
+                        Include Anatomical Damage Multipliers
+                    </label>
+                    <div id="damageFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-4 gap-2 text-xs">
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-0.5">Cranium</label>
+                            <input type="number" id="dmgHead" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-0.5">Torso</label>
+                            <input type="number" id="dmgBody" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-0.5">Legs</label>
+                            <input type="number" id="dmgLegs" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-0.5">Hands</label>
+                            <input type="number" id="dmgHands" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
+                        <input type="checkbox" id="includeInv" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
+                        Include Container Boundary Spatial Grid
+                    </label>
+                    <div id="invFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-2 text-xs">
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-0.5">Total Allocation</label>
+                            <input type="number" id="invSlots" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dimension X</label>
+                            <input type="number" id="invX" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dimension Y</label>
+                            <input type="number" id="invY" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-2 mt-auto shrink-0">
+                <button type="submit" id="submitFormBtn" class="w-full bg-[#f38020] hover:bg-[#fa923e] text-black font-bold py-2 rounded transition shadow text-xs uppercase tracking-wider cursor-pointer">
+                    Commit Entry to Dataset
+                </button>
+            </div>
+        </form>
+
+        <div class="lg:col-span-7 bg-[#18181b] border border-[#27272a] rounded-lg p-5 flex flex-col h-full shadow-xl overflow-hidden">
+            
+            <div class="shrink-0 space-y-4 border-b border-[#27272a] pb-4 mb-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#f38020] animate-pulse"></span>
+                        <h2 class="text-xs font-semibold text-[#f4f4f5] uppercase tracking-wider">
+                            Active System Indexes (<span id="itemCount">0</span>)
+                        </h2>
+                    </div>
+                    <button id="clearAll" class="text-xs text-[#a1a1aa] hover:text-[#f4f4f5] transition cursor-pointer font-medium">Purge All Matrices</button>
+                </div>
+                
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#52525b] text-xs">🔍</span>
+                    <input type="text" id="searchBar" class="w-full bg-[#0f0f11] border border-[#27272a] rounded pl-9 pr-4 py-2 text-xs text-[#f4f4f5] focus:outline-none focus:border-[#f38020] font-mono" placeholder="Filter indexes based on dynamic target ID, descriptive properties, tags...">
+                </div>
+            </div>
+            
+            <div id="itemList" class="grid grid-cols-1 xl:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 align-top content-start">
+                <div id="emptyState" class="col-span-full text-center text-[#52525b] py-24 text-xs font-mono">
+                    No runtime items map within active cache memory arrays. Pull system files or create profiles to map nodes.
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <script>
         let itemDataset = [];
         let editingIndex = null;
 
-        // UI Event Listeners for Dynamic Toggles
-        const hooks = [
+        // Dynamic Interactive Toggle Setup Configuration Mapping
+        const activeToggles = [
             { check: 'includeCore', target: 'coreFields' },
             { check: 'includeFarming', target: 'farmingFields' },
             { check: 'includeDamage', target: 'damageFields' },
             { check: 'includeInv', target: 'invFields' }
         ];
-        hooks.forEach(hook => {
-            document.getElementById(hook.check).addEventListener('change', (e) => {
-                document.getElementById(hook.target).classList.toggle('hidden', !e.target.checked);
+        activeToggles.forEach(toggle => {
+            document.getElementById(toggle.check).addEventListener('change', (e) => {
+                document.getElementById(toggle.target).classList.toggle('hidden', !e.target.checked);
             });
         });
 
-        // Search execution hook
+        // Search Bar Event Router Hook
         document.getElementById('searchBar').addEventListener('input', () => renderItems());
 
-        // Reset tracking form cleanly
+        // Standard Reset Routines
         function resetFormState() {
             editingIndex = null;
             document.getElementById('itemForm').reset();
-            document.getElementById('formTitle').innerText = "Create New Entry";
-            document.getElementById('submitFormBtn').className = "w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition shadow-md cursor-pointer text-sm tracking-wide";
-            document.getElementById('submitFormBtn').innerText = "➕ Add Entry To Active Dataset";
+            document.getElementById('formTitle').innerText = "Create Profile";
+            document.getElementById('submitFormBtn').className = "w-full bg-[#f38020] hover:bg-[#fa923e] text-black font-bold py-2 rounded transition shadow text-xs uppercase tracking-wider cursor-pointer";
+            document.getElementById('submitFormBtn').innerText = "Commit Entry to Dataset";
             document.getElementById('cancelEditBtn').classList.add('hidden');
             
-            // Re-hide optional UI panels
-            hooks.forEach(hook => document.getElementById(hook.target).classList.add('hidden'));
+            activeToggles.forEach(toggle => document.getElementById(toggle.target).classList.add('hidden'));
             
-            // Standardize fallbacks
             document.getElementById('buyPrice').value = "-1";
             document.getElementById('sellPrice').value = "-1";
             
-            // Clean up highlighted active frames
-            document.querySelectorAll('.item-card').forEach(c => c.classList.remove('border-emerald-500', 'bg-gray-800/50'));
+            document.querySelectorAll('.item-card').forEach(card => card.classList.remove('border-[#f38020]', 'bg-[#27272a]/30'));
         }
 
         document.getElementById('cancelEditBtn').addEventListener('click', () => resetFormState());
 
-        // Interface Renderer Map Function
+        // Virtual DOM Tree Mapper System Renderer
         function renderItems() {
-            const listContainer = document.getElementById('itemList');
-            const emptyState = document.getElementById('emptyState');
-            const countBadge = document.getElementById('itemCount');
-            const query = document.getElementById('searchBar').value.toLowerCase().trim();
+            const container = document.getElementById('itemList');
+            const placeholder = document.getElementById('emptyState');
+            const trackerBadge = document.getElementById('itemCount');
+            const filterQuery = document.getElementById('searchBar').value.toLowerCase().trim();
             
-            listContainer.querySelectorAll('.item-card').forEach(card => card.remove());
-            countBadge.innerText = itemDataset.length;
+            container.querySelectorAll('.item-card').forEach(card => card.remove());
+            trackerBadge.innerText = itemDataset.length;
 
             if (itemDataset.length === 0) {
-                emptyState.classList.remove('hidden');
+                placeholder.classList.remove('hidden');
                 return;
             }
 
-            // Engine filter operations
-            const filteredData = itemDataset.map((item, originalIndex) => ({ item, originalIndex })).filter(({ item }) => {
-                if (!query) return true;
-                const matchString = [
+            const activeViewNodes = itemDataset.map((item, originalIndex) => ({ item, originalIndex })).filter(({ item }) => {
+                if (!filterQuery) return true;
+                return [
                     item.id, item.name, item.full_name, item.description, 
                     item.catagory, item.type, (item.tags || []).join(' ')
-                ].join(' ').toLowerCase();
-                return matchString.includes(query);
+                ].join(' ').toLowerCase().includes(filterQuery);
             });
 
-            if (filteredData.length === 0) {
-                emptyState.classList.remove('hidden');
+            if (activeViewNodes.length === 0) {
+                placeholder.classList.remove('hidden');
                 return;
             }
             
-            emptyState.classList.add('hidden');
+            placeholder.classList.add('hidden');
 
-            filteredData.forEach(({ item, originalIndex }) => {
-                const card = document.createElement('div');
-                const isEditing = editingIndex === originalIndex;
+            activeViewNodes.forEach(({ item, originalIndex }) => {
+                const nodeCard = document.createElement('div');
+                const stateSyncActive = editingIndex === originalIndex;
                 
-                card.className = `item-card bg-gray-950 border ${isEditing ? 'border-emerald-500 bg-gray-800/30' : 'border-gray-800'} rounded-lg p-4 flex gap-3 relative hover:border-gray-600 transition group items-start cursor-pointer`;
-                card.setAttribute('data-index', originalIndex);
+                nodeCard.className = `item-card bg-[#18181b] border ${stateSyncActive ? 'border-[#f38020] bg-[#27272a]/20' : 'border-[#27272a]'} rounded p-3 flex gap-3 relative hover:border-[#3f3f46] transition items-start cursor-pointer group`;
+                nodeCard.setAttribute('data-index', originalIndex);
                 
-                const fallbackImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23374151'><rect width='24' height='24' rx='4'/></svg>";
-                const tagsHtml = (item.tags || []).map(t => `<span class="bg-gray-900 text-gray-400 text-[9px] px-1.5 py-0.5 rounded border border-gray-800">${t}</span>`).join('');
+                const missingAssetVector = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%2327272a'><rect width='24' height='24' rx='2'/></svg>";
+                const markupTags = (item.tags || []).map(tag => `<span class="bg-[#0f0f11] text-[#a1a1aa] text-[9px] px-1 rounded border border-[#27272a] font-mono">${tag}</span>`).join('');
 
-                card.innerHTML = `
-                    <img src="${item.icon || fallbackImg}" onerror="this.src='${fallbackImg}'" class="w-12 h-12 rounded bg-gray-900 object-contain p-1 border border-gray-800 shrink-0">
+                nodeCard.innerHTML = `
+                    <img src="${item.icon || missingAssetVector}" onerror="this.src='${missingAssetVector}'" class="w-10 h-10 rounded bg-[#0f0f11] object-contain p-1 border border-[#27272a] shrink-0">
                     <div class="flex-1 min-w-0 pointer-events-none">
-                        <div class="text-sm font-bold text-gray-200 truncate pr-5" title="${item.full_name}">${item.full_name || item.name || 'Unnamed item'}</div>
-                        <div class="text-[11px] text-gray-500 font-mono">ID: ${item.id || 'N/A'} | Type: ${item.type || 'N/A'}</div>
-                        <div class="text-[11px] text-gray-400 mt-0.5 font-medium">$:${item.buy_price ?? -1} / S:${item.sell_price ?? -1}</div>
-                        <div class="flex flex-wrap gap-1 mt-2">${tagsHtml}</div>
+                        <div class="text-xs font-semibold text-[#f4f4f5] truncate pr-4">${item.full_name || item.name || 'Undefined Index'}</div>
+                        <div class="text-[10px] text-[#52525b] font-mono mt-0.5 truncate">ID: ${item.id || 'Null'}</div>
+                        <div class="text-[10px] text-[#a1a1aa] font-mono mt-1">B: ${item.buy_price ?? -1} / S: ${item.sell_price ?? -1}</div>
+                        <div class="flex flex-wrap gap-1 mt-2">${markupTags}</div>
                     </div>
-                    <button data-delete="${originalIndex}" class="absolute top-2 right-2 text-gray-600 hover:text-red-400 font-bold text-base transition px-1 z-10 cursor-pointer">&times;</button>
+                    <button data-delete="${originalIndex}" class="absolute top-1.5 right-1.5 text-[#52525b] hover:text-red-400 font-bold text-sm transition px-1 z-10 cursor-pointer">&times;</button>
                 `;
 
-                // Edit click interceptor mechanics
-                card.addEventListener('click', (e) => {
+                nodeCard.addEventListener('click', (e) => {
                     if (e.target.hasAttribute('data-delete')) {
                         e.stopPropagation();
                         removeItem(parseInt(e.target.getAttribute('data-delete')));
                         return;
                     }
-                    loadItemToEditor(originalIndex);
+                    loadTargetToConsole(originalIndex);
                 });
 
-                listContainer.appendChild(card);
+                container.appendChild(nodeCard);
             });
         }
 
-        // Populates UI controls dynamically from stored schema structures
-        function loadItemToEditor(index) {
+        // Element Mutation Data Loader Routine
+        function loadTargetToConsole(index) {
             resetFormState();
             editingIndex = index;
-            const item = itemDataset[index];
+            const record = itemDataset[index];
 
-            document.getElementById('formTitle').innerText = `✏️ Editing Entry [${item.id}]`;
-            document.getElementById('submitFormBtn').className = "w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-lg transition shadow-md cursor-pointer text-sm tracking-wide";
-            document.getElementById('submitFormBtn').innerText = "💾 Update Item Profile";
+            document.getElementById('formTitle').innerText = `Modify Node [${record.id}]`;
+            document.getElementById('submitFormBtn').className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded transition shadow text-xs uppercase tracking-wider cursor-pointer";
+            document.getElementById('submitFormBtn').innerText = "Update Registered Node";
             document.getElementById('cancelEditBtn').classList.remove('hidden');
 
-            // Populate core nodes
-            document.getElementById('itemId').value = item.id || '';
-            document.getElementById('itemType').value = item.type || '';
-            document.getElementById('itemName').value = item.name || '';
-            document.getElementById('itemFullName').value = item.full_name || '';
-            document.getElementById('itemCategory').value = item.catagory || '';
-            document.getElementById('itemRelease').value = item.release_date || '';
-            document.getElementById('itemIcon').value = item.icon || '';
-            document.getElementById('itemDescription').value = item.description || '';
-            document.getElementById('itemTags').value = (item.tags || []).join(', ');
-            document.getElementById('buyPrice').value = item.buy_price ?? -1;
-            document.getElementById('sellPrice').value = item.sell_price ?? -1;
+            document.getElementById('itemId').value = record.id || '';
+            document.getElementById('itemType').value = record.type || '';
+            document.getElementById('itemName').value = record.name || '';
+            document.getElementById('itemFullName').value = record.full_name || '';
+            document.getElementById('itemCategory').value = record.catagory || '';
+            document.getElementById('itemRelease').value = record.release_date || '';
+            document.getElementById('itemIcon').value = record.icon || '';
+            document.getElementById('itemDescription').value = record.description || '';
+            document.getElementById('itemTags').value = (record.tags || []).join(', ');
+            document.getElementById('buyPrice').value = record.buy_price ?? -1;
+            document.getElementById('sellPrice').value = record.sell_price ?? -1;
 
-            const stats = item.stats || {};
+            const statsBlock = record.stats || {};
 
-            // Check core attributes structures mapping
-            if ('protection' in stats || 'blast_protection' in stats || 'speed' in stats) {
+            if ('protection' in statsBlock || 'blast_protection' in statsBlock || 'speed' in statsBlock) {
                 document.getElementById('includeCore').checked = true;
                 document.getElementById('coreFields').classList.remove('hidden');
-                document.getElementById('statProt').value = stats.protection ?? 0;
-                document.getElementById('statBlast').value = stats.blast_protection ?? 0;
-                document.getElementById('statSpeed').value = stats.speed ?? 0;
+                document.getElementById('statProt').value = statsBlock.protection ?? 0;
+                document.getElementById('statBlast').value = statsBlock.blast_protection ?? 0;
+                document.getElementById('statSpeed').value = statsBlock.speed ?? 0;
             }
 
-            // Check farming configurations metrics
-            if ('grow_time' in stats || 'harvest_yield' in stats || 'obtained_from' in stats) {
+            if ('grow_time' in statsBlock || 'harvest_yield' in statsBlock || 'obtained_from' in statsBlock) {
                 document.getElementById('includeFarming').checked = true;
                 document.getElementById('farmingFields').classList.remove('hidden');
-                document.getElementById('farmGrow').value = stats.grow_time ?? 0;
-                document.getElementById('farmYield').value = stats.harvest_yield || '';
-                document.getElementById('farmSource').value = stats.obtained_from || '';
+                document.getElementById('farmGrow').value = statsBlock.grow_time ?? 0;
+                document.getElementById('farmYield').value = statsBlock.harvest_yield || '';
+                document.getElementById('farmSource').value = statsBlock.obtained_from || '';
             }
 
-            // Check modular body damage specifications mapping
-            if (stats.damage && stats.damage.player) {
+            if (statsBlock.damage && statsBlock.damage.player) {
                 document.getElementById('includeDamage').checked = true;
                 document.getElementById('damageFields').classList.remove('hidden');
-                const pl = stats.damage.player;
-                document.getElementById('dmgHead').value = pl.head ?? 0;
-                document.getElementById('dmgBody').value = pl.body ?? 0;
-                document.getElementById('dmgLegs').value = pl.legs ?? 0;
-                document.getElementById('dmgHands').value = pl.hands ?? 0;
+                const targetPlayer = statsBlock.damage.player;
+                document.getElementById('dmgHead').value = targetPlayer.head ?? 0;
+                document.getElementById('dmgBody').value = targetPlayer.body ?? 0;
+                document.getElementById('dmgLegs').value = targetPlayer.legs ?? 0;
+                document.getElementById('dmgHands').value = targetPlayer.hands ?? 0;
             }
 
-            // Check inventory parameters layout structures
-            if (stats.inventory) {
+            if (statsBlock.inventory) {
                 document.getElementById('includeInv').checked = true;
                 document.getElementById('invFields').classList.remove('hidden');
-                document.getElementById('invSlots').value = stats.inventory.slots ?? 0;
-                document.getElementById('invX').value = stats.inventory.x ?? 0;
-                document.getElementById('invY').value = stats.inventory.y ?? 0;
+                document.getElementById('invSlots').value = statsBlock.inventory.slots ?? 0;
+                document.getElementById('invX').value = statsBlock.inventory.x ?? 0;
+                document.getElementById('invY').value = statsBlock.inventory.y ?? 0;
             }
 
             renderItems();
         }
 
-        // Array splicing operation
         function removeItem(index) {
             if (editingIndex === index) resetFormState();
             itemDataset.splice(index, 1);
             renderItems();
         }
 
-        // Complete dataset purge hook
         document.getElementById('clearAll').addEventListener('click', () => {
-            if (confirm("Purge all live storage nodes? Unexported data blocks will be destroyed.")) {
+            if (confirm("Purge current live profile cache arrays entirely?")) {
                 itemDataset = [];
                 resetFormState();
                 renderItems();
             }
         });
 
-        // Form processing submit controller engine
+        // Form Submit Execution Mapping Pipeline
         document.getElementById('itemForm').addEventListener('submit', (e) => {
             e.preventDefault();
-
-            const baseStats = {};
+            const compiledStats = {};
 
             if (document.getElementById('includeCore').checked) {
-                baseStats.protection = parseFloat(document.getElementById('statProt').value) || 0.0;
-                baseStats.blast_protection = parseFloat(document.getElementById('statBlast').value) || 0.0;
-                baseStats.speed = parseFloat(document.getElementById('statSpeed').value) || 0.0;
+                compiledStats.protection = parseFloat(document.getElementById('statProt').value) || 0.0;
+                compiledStats.blast_protection = parseFloat(document.getElementById('statBlast').value) || 0.0;
+                compiledStats.speed = parseFloat(document.getElementById('statSpeed').value) || 0.0;
             }
 
             if (document.getElementById('includeFarming').checked) {
-                baseStats.grow_time = parseInt(document.getElementById('farmGrow').value) || 0;
-                baseStats.harvest_yield = document.getElementById('farmYield').value.trim();
-                baseStats.obtained_from = document.getElementById('farmSource').value.trim();
+                compiledStats.grow_time = parseInt(document.getElementById('farmGrow').value) || 0;
+                compiledStats.harvest_yield = document.getElementById('farmYield').value.trim();
+                compiledStats.obtained_from = document.getElementById('farmSource').value.trim();
             }
 
             if (document.getElementById('includeDamage').checked) {
-                baseStats.damage = {
+                compiledStats.damage = {
                     player: {
                         head: parseInt(document.getElementById('dmgHead').value) || 0,
                         body: parseInt(document.getElementById('dmgBody').value) || 0,
@@ -444,110 +438,109 @@
             }
 
             if (document.getElementById('includeInv').checked) {
-                baseStats.inventory = {
+                compiledStats.inventory = {
                     slots: parseInt(document.getElementById('invSlots').value) || 0,
                     x: parseInt(document.getElementById('invX').value) || 0,
                     y: parseInt(document.getElementById('invY').value) || 0
                 };
             }
 
-            const tagsInput = document.getElementById('itemTags').value;
-            const tagsArray = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(t => t.length > 0) : [];
+            const unprocessedTags = document.getElementById('itemTags').value;
+            const parsedTags = unprocessedTags ? unprocessedTags.split(',').map(tag => tag.trim()).filter(t => t.length > 0) : [];
 
-            const constructedItem = {
+            const operationalPayload = {
                 id: document.getElementById('itemId').value.trim(),
                 name: document.getElementById('itemName').value.trim(),
                 full_name: document.getElementById('itemFullName').value.trim(),
                 description: document.getElementById('itemDescription').value.trim(),
                 icon: document.getElementById('itemIcon').value.trim(),
                 catagory: document.getElementById('itemCategory').value.trim(),
-                tags: tagsArray,
+                tags: parsedTags,
                 release_date: document.getElementById('itemRelease').value.trim() || "00/00/0000",
                 type: document.getElementById('itemType').value.trim(),
                 buy_price: parseInt(document.getElementById('buyPrice').value) ?? -1,
                 sell_price: parseInt(document.getElementById('sellPrice').value) ?? -1,
-                stats: Object.keys(baseStats).length > 0 ? baseStats : {}
+                stats: Object.keys(compiledStats).length > 0 ? compiledStats : {}
             };
 
             if (editingIndex !== null) {
-                itemDataset[editingIndex] = constructedItem;
+                itemDataset[editingIndex] = operationalPayload;
             } else {
-                itemDataset.push(constructedItem);
+                itemDataset.push(operationalPayload);
             }
 
             resetFormState();
             renderItems();
         });
 
-        // Local Storage JSON Uploader
+        // JSON Import Processing File Engine Reader
         document.getElementById('importJson').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+            const rawTargetFile = e.target.files[0];
+            if (!rawTargetFile) return;
 
-            const reader = new FileReader();
-            reader.onload = function(evt) {
+            const trackingReader = new FileReader();
+            trackingReader.onload = function(evt) {
                 try {
-                    const parsedData = JSON.parse(evt.target.result);
-                    if (Array.isArray(parsedData)) {
-                        itemDataset = [...itemDataset, ...parsedData];
+                    const decodedArrayStructure = JSON.parse(evt.target.result);
+                    if (Array.isArray(decodedArrayStructure)) {
+                        itemDataset = [...itemDataset, ...decodedArrayStructure];
                         renderItems();
                     } else {
-                        alert("Invalid structure layout. Target requires standard object arrays.");
+                        alert("Malformed internal profile format. Top level must represent array data arrays.");
                     }
                 } catch (err) {
-                    alert("Fatal error running syntax checks on compilation file parsing target.");
+                    alert("Syntax checking engine failed to properly process raw JSON characters.");
                 }
                 e.target.value = '';
             };
-            reader.readAsText(file);
+            trackingReader.readAsText(rawTargetFile);
         });
 
-        // Remote Cache-Busting Repository Pull Operation
+        // Safe Micro-Streaming Preflight Bypassing System Cache Network Requester
         document.getElementById('loadLatest').addEventListener('click', async () => {
-            const btn = document.getElementById('loadLatest');
-            const originalText = btn.innerHTML;
+            const activationBtn = document.getElementById('loadLatest');
+            const placeholderFallbackText = activationBtn.innerHTML;
             
-            btn.innerHTML = "⏳ Streaming Network Blocks...";
-            btn.disabled = true;
+            activationBtn.innerHTML = "⏳ Synchronization Stream Active...";
+            activationBtn.disabled = true;
 
-            const remoteUrl = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?t=${Date.now()}`;
+            const targetSourceUri = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?t=${Date.now()}`;
 
             try {
-                const response = await fetch(remoteUrl, { method: 'GET', cache: 'no-store' });
+                const cloudstreamResponse = await fetch(targetSourceUri, { method: 'GET', cache: 'no-store' });
+                if (!cloudstreamResponse.ok) throw new Error(`Network layer exception status response: ${cloudstreamResponse.status}`);
+                
+                const responsePayloadArray = await cloudstreamResponse.json();
 
-                if (!response.ok) throw new Error(`HTTP state exception code ${response.status}`);
-                const remoteData = await response.json();
-
-                if (Array.isArray(remoteData)) {
-                    itemDataset = [...itemDataset, ...remoteData];
+                if (Array.isArray(responsePayloadArray)) {
+                    itemDataset = [...itemDataset, ...responsePayloadArray];
                     renderItems();
-                    alert(`Dataset synchronized successfully! Pulled ${remoteData.length} records into main system processing pipeline.`);
                 } else {
-                    alert("Stream complete, but data profile formatting was invalid.");
+                    alert("Stream mapping error: Server returned object configuration rather than standard collection array.");
                 }
             } catch (error) {
                 console.error(error);
-                alert(`CORS or structural access issue detected connecting to remote resource: ${error.message}`);
+                alert(`Matrix pipeline synchronization block failure: ${error.message}`);
             } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+                activationBtn.innerHTML = placeholderFallbackText;
+                activationBtn.disabled = false;
             }
         });
 
-        // Exporter Data Pipeline Serialization Engine
+        // Export Payload Direct Disk Stream Engine Serialization Writer
         document.getElementById('exportJson').addEventListener('click', () => {
             if (itemDataset.length === 0) {
-                alert("The record database is empty. Add entries before attempting output operations.");
+                alert("Runtime workspace arrays contain no active profiles to compile.");
                 return;
             }
             
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(itemDataset, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", "items_exported.json");
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
+            const internalDataUriString = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(itemDataset, null, 2));
+            const browserVirtualAnchor = document.createElement('a');
+            browserVirtualAnchor.setAttribute("href", internalDataUriString);
+            browserVirtualAnchor.setAttribute("download", "items.json");
+            document.body.appendChild(browserVirtualAnchor);
+            browserVirtualAnchor.click();
+            browserVirtualAnchor.remove();
         });
     </script>
 </body>
