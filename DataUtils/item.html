@@ -3,29 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RP Item Manager</title>
+    <title>RP Item Manager Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        /* Custom scrollbar for better UI aesthetics */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1f2937; }
         ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen font-sans p-6">
+<body class="bg-gray-950 text-gray-100 min-h-screen font-sans p-6">
 
     <div class="max-w-7xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-center bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 mb-6 gap-4">
+        <header class="flex flex-col md:flex-row justify-between items-center bg-gray-900 p-6 rounded-xl shadow-2xl border border-gray-800 mb-6 gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-indigo-400">Mass Item Creator</h1>
-                <p class="text-gray-400 text-sm mt-1">Import, create, and manage your game items seamlessly.</p>
+                <h1 class="text-2xl font-bold text-indigo-400 tracking-wide flex items-center gap-2">⚔️ Nylex RP Item Suite</h1>
+                <p class="text-gray-400 text-sm mt-1">Mass produce, browse, modify, and update item JSON data nodes live.</p>
             </div>
             <div class="flex flex-wrap gap-3 justify-center">
                 <button id="loadLatest" class="bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-lg transition shadow-md flex items-center gap-2 cursor-pointer">
                     🔄 Load Latest
                 </button>
-                <label class="bg-gray-700 hover:bg-gray-600 text-white font-medium px-4 py-2 rounded-lg cursor-pointer transition shadow-md flex items-center gap-2">
+                <label class="bg-gray-800 hover:bg-gray-700 text-white font-medium px-4 py-2 rounded-lg cursor-pointer transition shadow-md flex items-center gap-2 border border-gray-700">
                     📂 Import JSON
                     <input type="file" id="importJson" accept=".json" class="hidden">
                 </label>
@@ -35,139 +34,187 @@
             </div>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
-            <form id="itemForm" class="lg:col-span-5 bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg space-y-4 max-h-[80vh] overflow-y-auto">
-                <h2 class="text-xl font-semibold border-b border-gray-700 pb-2 text-indigo-300">Add New Item</h2>
+            <form id="itemForm" class="lg:col-span-5 bg-gray-900 p-6 rounded-xl border border-gray-800 shadow-2xl space-y-4 lg:sticky lg:top-6 max-h-[88vh] overflow-y-auto">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                    <h2 id="formTitle" class="text-lg font-bold text-indigo-400">Create New Entry</h2>
+                    <button type="button" id="cancelEditBtn" class="hidden text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-2.5 py-1 rounded border border-gray-700 cursor-pointer">Cancel Edit</button>
+                </div>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Item ID</label>
-                        <input type="text" id="itemId" required class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Item ID *</label>
+                        <input type="text" id="itemId" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Type</label>
-                        <input type="text" id="itemType" value="structure" required class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Item Type *</label>
+                        <input type="text" id="itemType" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">System Name</label>
-                        <input type="text" id="itemName" placeholder="e.g. nycoin" required class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">System Name *</label>
+                        <input type="text" id="itemName" placeholder="e.g. nycoin" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Full/UI Name</label>
-                        <input type="text" id="itemFullName" placeholder="e.g. Nycoin" required class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Full/UI Name *</label>
+                        <input type="text" id="itemFullName" placeholder="e.g. Nycoin" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
                     </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Category</label>
-                    <input type="text" id="itemCategory" value="nycoin" required class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Icon URL</label>
-                    <input type="url" id="itemIcon" placeholder="https://..." class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500 text-sm">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Description</label>
-                    <textarea id="itemDescription" rows="2" class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500 text-sm"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Tags (Comma Separated)</label>
-                        <input type="text" id="itemTags" placeholder="unobtainable, farming" class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500 text-sm">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Category *</label>
+                        <input type="text" id="itemCategory" required class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Release Date</label>
-                        <input type="text" id="itemRelease" value="00/00/0000" class="w-full bg-gray-900 border border-gray-700 rounded p-2 text-white focus:outline-none focus:border-indigo-500">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Release Date</label>
+                        <input type="text" id="itemRelease" placeholder="00/00/0000" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
                     </div>
                 </div>
 
-                <div class="bg-gray-900 p-3 rounded border border-gray-700 space-y-3">
-                    <h3 class="text-sm font-bold text-indigo-400 border-b border-gray-700 pb-1">Core Stats</h3>
-                    <div class="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Icon Source URL</label>
+                    <input type="url" id="itemIcon" placeholder="https://raw.githubusercontent.com/..." class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Description</label>
+                    <textarea id="itemDescription" rows="2" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Tags (Comma Separated)</label>
+                    <input type="text" id="itemTags" placeholder="unobtainable, christmas, farming" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">Buy Price</label>
+                        <input type="number" id="buyPrice" value="-1" class="w-full bg-gray-900 border border-gray-800 rounded p-1.5 text-sm font-mono text-white">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Sell Price</label>
+                        <input type="number" id="sellPrice" value="-1" class="w-full bg-gray-900 border border-gray-800 rounded p-1.5 text-sm font-mono text-white">
+                    </div>
+                </div>
+
+                <div class="space-y-2 border-t border-gray-800 pt-3">
+                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
+                        <input type="checkbox" id="includeCore" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
+                        Include Base Core Stats Block
+                    </label>
+                    <div id="coreFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-3 gap-2 text-xs">
                         <div>
-                            <label class="block text-xs text-gray-400 mb-0.5">Protection</label>
-                            <input type="number" step="0.1" id="statProt" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1 text-white">
+                            <label class="block text-gray-400 mb-0.5">Protection</label>
+                            <input type="number" step="0.1" id="statProt" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
                         </div>
                         <div>
-                            <label class="block text-xs text-gray-400 mb-0.5">Blast Protection</label>
-                            <input type="number" step="0.1" id="statBlast" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1 text-white">
+                            <label class="block text-gray-400 mb-0.5">Blast Prot.</label>
+                            <input type="number" step="0.1" id="statBlast" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
                         </div>
                         <div>
-                            <label class="block text-xs text-gray-400 mb-0.5">Speed Modifier</label>
-                            <input type="number" step="0.1" id="statSpeed" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1 text-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-0.5">Grow Time</label>
-                            <input type="number" id="statGrow" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1 text-white">
+                            <label class="block text-gray-400 mb-0.5">Speed Mod.</label>
+                            <input type="number" step="0.1" id="statSpeed" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-sm text-gray-300 font-medium cursor-pointer">
-                        <input type="checkbox" id="includeDamage" class="rounded border-gray-700 text-indigo-600 focus:ring-indigo-500">
-                        Include Player Damage Modifiers
+                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
+                        <input type="checkbox" id="includeFarming" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
+                        Include Farming / Growth Settings
                     </label>
-                    <div id="damageFields" class="hidden bg-gray-900 p-3 rounded border border-gray-700 grid grid-cols-4 gap-2 text-xs">
+                    <div id="farmingFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 space-y-2 text-xs">
+                        <div>
+                            <label class="block text-gray-400 mb-0.5">Grow Duration Time (Seconds)</label>
+                            <input type="number" id="farmGrow" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1 font-mono">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-gray-400 mb-0.5">Harvest Yield / Drops</label>
+                                <input type="text" id="farmYield" placeholder="e.g. nycoin_shard" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-0.5">Obtained From</label>
+                                <input type="text" id="farmSource" placeholder="e.g. seed_planter" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
+                        <input type="checkbox" id="includeDamage" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
+                        Include Body Damage Profiles
+                    </label>
+                    <div id="damageFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-4 gap-2 text-xs">
                         <div>
                             <label class="block text-gray-400">Head</label>
-                            <input type="number" id="dmgHead" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1">
+                            <input type="number" id="dmgHead" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
                         </div>
                         <div>
                             <label class="block text-gray-400">Body</label>
-                            <input type="number" id="dmgBody" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1">
+                            <input type="number" id="dmgBody" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
                         </div>
                         <div>
                             <label class="block text-gray-400">Legs</label>
-                            <input type="number" id="dmgLegs" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1">
+                            <input type="number" id="dmgLegs" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
                         </div>
                         <div>
                             <label class="block text-gray-400">Hands</label>
-                            <input type="number" id="dmgHands" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1">
-                        </div>
-                    </div>
-
-                    <label class="flex items-center gap-2 text-sm text-gray-300 font-medium cursor-pointer">
-                        <input type="checkbox" id="includeInv" class="rounded border-gray-700 text-indigo-600 focus:ring-indigo-500">
-                        Include Inventory Grid
-                    </label>
-                    <div id="invFields" class="hidden bg-gray-900 p-3 rounded border border-gray-700 grid grid-cols-3 gap-2 text-xs">
-                        <div>
-                            <label class="block text-gray-400">Slots</label>
-                            <input type="number" id="invSlots" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400">Grid X</label>
-                            <input type="number" id="invX" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1">
-                        </div>
-                        <div>
-                            <label class="block text-gray-400">Grid Y</label>
-                            <input type="number" id="invY" value="0" class="w-full bg-gray-800 border border-gray-700 rounded p-1">
+                            <input type="number" id="dmgHands" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition shadow-md cursor-pointer">
-                    ➕ Add to Live Dataset
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 text-xs text-gray-300 font-medium cursor-pointer">
+                        <input type="checkbox" id="includeInv" class="rounded border-gray-800 bg-gray-950 text-indigo-600 focus:ring-indigo-500">
+                        Include Internal Inventory Layout
+                    </label>
+                    <div id="invFields" class="hidden bg-gray-950 p-3 rounded border border-gray-800 grid grid-cols-3 gap-2 text-xs">
+                        <div>
+                            <label class="block text-gray-400">Total Slots</label>
+                            <input type="number" id="invSlots" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400">Grid Width X</label>
+                            <input type="number" id="invX" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400">Grid Height Y</label>
+                            <input type="number" id="invY" value="0" class="w-full bg-gray-900 border border-gray-800 rounded p-1">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitFormBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition shadow-md cursor-pointer text-sm tracking-wide">
+                    ➕ Add Entry To Active Dataset
                 </button>
             </form>
 
-            <div class="lg:col-span-7 bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col max-h-[80vh]">
-                <div class="flex justify-between items-center border-b border-gray-700 pb-2 mb-4">
-                    <h2 class="text-xl font-semibold text-indigo-300">Active Dataset (<span id="itemCount">0</span> Items)</h2>
-                    <button id="clearAll" class="text-xs text-red-400 hover:text-red-300 transition font-medium cursor-pointer">Clear All</button>
+            <div class="lg:col-span-7 bg-gray-900 p-6 rounded-xl border border-gray-800 shadow-2xl flex flex-col max-h-[88vh]">
+                
+                <div class="border-b border-gray-800 pb-4 mb-4 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+                            Active Records (<span id="itemCount">0</span>)
+                        </h2>
+                        <button id="clearAll" class="text-xs text-red-400 hover:text-red-300 transition font-medium cursor-pointer">Purge Matrix</button>
+                    </div>
+                    
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">🔍</span>
+                        <input type="text" id="searchBar" placeholder="Search item repository by ID, metadata matching name, tags, description..." class="w-full bg-gray-950 border border-gray-800 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 placeholder-gray-600">
+                    </div>
                 </div>
                 
-                <div id="itemList" class="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto pr-1 flex-1 align-top content-start">
-                    <div id="emptyState" class="col-span-full text-center text-gray-500 py-12">
-                        No items loaded. Import a JSON file, fetch remote data, or add items manually to start building your database.
+                <div id="itemList" class="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 align-top content-start">
+                    <div id="emptyState" class="col-span-full text-center text-gray-600 py-16 text-sm">
+                        No active records match the criteria. Import database structures, fetch source metadata, or utilize the builder tool to begin production.
                     </div>
                 </div>
             </div>
@@ -177,82 +224,213 @@
 
     <script>
         let itemDataset = [];
+        let editingIndex = null;
 
-        // Toggle sub-stats UI panels
-        document.getElementById('includeDamage').addEventListener('change', (e) => {
-            document.getElementById('damageFields').classList.toggle('hidden', !e.target.checked);
-        });
-        document.getElementById('includeInv').addEventListener('change', (e) => {
-            document.getElementById('invFields').classList.toggle('hidden', !e.target.checked);
+        // UI Event Listeners for Dynamic Toggles
+        const hooks = [
+            { check: 'includeCore', target: 'coreFields' },
+            { check: 'includeFarming', target: 'farmingFields' },
+            { check: 'includeDamage', target: 'damageFields' },
+            { check: 'includeInv', target: 'invFields' }
+        ];
+        hooks.forEach(hook => {
+            document.getElementById(hook.check).addEventListener('change', (e) => {
+                document.getElementById(hook.target).classList.toggle('hidden', !e.target.checked);
+            });
         });
 
-        // Dynamic item UI renderer
+        // Search execution hook
+        document.getElementById('searchBar').addEventListener('input', () => renderItems());
+
+        // Reset tracking form cleanly
+        function resetFormState() {
+            editingIndex = null;
+            document.getElementById('itemForm').reset();
+            document.getElementById('formTitle').innerText = "Create New Entry";
+            document.getElementById('submitFormBtn').className = "w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg transition shadow-md cursor-pointer text-sm tracking-wide";
+            document.getElementById('submitFormBtn').innerText = "➕ Add Entry To Active Dataset";
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+            
+            // Re-hide optional UI panels
+            hooks.forEach(hook => document.getElementById(hook.target).classList.add('hidden'));
+            
+            // Standardize fallbacks
+            document.getElementById('buyPrice').value = "-1";
+            document.getElementById('sellPrice').value = "-1";
+            
+            // Clean up highlighted active frames
+            document.querySelectorAll('.item-card').forEach(c => c.classList.remove('border-emerald-500', 'bg-gray-800/50'));
+        }
+
+        document.getElementById('cancelEditBtn').addEventListener('click', () => resetFormState());
+
+        // Interface Renderer Map Function
         function renderItems() {
             const listContainer = document.getElementById('itemList');
             const emptyState = document.getElementById('emptyState');
             const countBadge = document.getElementById('itemCount');
+            const query = document.getElementById('searchBar').value.toLowerCase().trim();
             
-            // Clean up old list items
-            const oldCards = listContainer.querySelectorAll('.item-card');
-            oldCards.forEach(card => card.remove());
-
+            listContainer.querySelectorAll('.item-card').forEach(card => card.remove());
             countBadge.innerText = itemDataset.length;
 
             if (itemDataset.length === 0) {
                 emptyState.classList.remove('hidden');
                 return;
             }
+
+            // Engine filter operations
+            const filteredData = itemDataset.map((item, originalIndex) => ({ item, originalIndex })).filter(({ item }) => {
+                if (!query) return true;
+                const matchString = [
+                    item.id, item.name, item.full_name, item.description, 
+                    item.catagory, item.type, (item.tags || []).join(' ')
+                ].join(' ').toLowerCase();
+                return matchString.includes(query);
+            });
+
+            if (filteredData.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
             
             emptyState.classList.add('hidden');
 
-            itemDataset.forEach((item, index) => {
+            filteredData.forEach(({ item, originalIndex }) => {
                 const card = document.createElement('div');
-                card.className = "item-card bg-gray-900 border border-gray-700 rounded-lg p-4 flex gap-3 relative hover:border-gray-500 transition group items-start";
+                const isEditing = editingIndex === originalIndex;
                 
-                // Safety logic for fallback image icons
-                const fallbackImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%234b5563'><rect width='24' height='24' rx='4'/></svg>";
+                card.className = `item-card bg-gray-950 border ${isEditing ? 'border-emerald-500 bg-gray-800/30' : 'border-gray-800'} rounded-lg p-4 flex gap-3 relative hover:border-gray-600 transition group items-start cursor-pointer`;
+                card.setAttribute('data-index', originalIndex);
                 
-                // Create tags elements safely
-                const tagsHtml = (item.tags || []).map(t => `<span class="bg-gray-800 text-gray-400 text-[10px] px-1.5 py-0.5 rounded border border-gray-700">${t}</span>`).join('');
+                const fallbackImg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23374151'><rect width='24' height='24' rx='4'/></svg>";
+                const tagsHtml = (item.tags || []).map(t => `<span class="bg-gray-900 text-gray-400 text-[9px] px-1.5 py-0.5 rounded border border-gray-800">${t}</span>`).join('');
 
                 card.innerHTML = `
-                    <img src="${item.icon || fallbackImg}" onerror="this.src='${fallbackImg}'" class="w-12 h-12 rounded bg-gray-800 object-contain p-1 border border-gray-700 shrink-0">
-                    <div class="flex-1 min-w-0">
-                        <div class="text-sm font-bold text-gray-200 truncate pr-5" title="${item.full_name}">${item.full_name || item.name}</div>
-                        <div class="text-xs text-gray-500 font-mono">ID: ${item.id} | Type: ${item.type}</div>
-                        <div class="flex flex-wrap gap-1 mt-1.5">${tagsHtml}</div>
+                    <img src="${item.icon || fallbackImg}" onerror="this.src='${fallbackImg}'" class="w-12 h-12 rounded bg-gray-900 object-contain p-1 border border-gray-800 shrink-0">
+                    <div class="flex-1 min-w-0 pointer-events-none">
+                        <div class="text-sm font-bold text-gray-200 truncate pr-5" title="${item.full_name}">${item.full_name || item.name || 'Unnamed item'}</div>
+                        <div class="text-[11px] text-gray-500 font-mono">ID: ${item.id || 'N/A'} | Type: ${item.type || 'N/A'}</div>
+                        <div class="text-[11px] text-gray-400 mt-0.5 font-medium">$:${item.buy_price ?? -1} / S:${item.sell_price ?? -1}</div>
+                        <div class="flex flex-wrap gap-1 mt-2">${tagsHtml}</div>
                     </div>
-                    <button onclick="removeItem(${index})" class="absolute top-2 right-2 text-gray-500 hover:text-red-400 font-bold text-sm transition cursor-pointer px-1">&times;</button>
+                    <button data-delete="${originalIndex}" class="absolute top-2 right-2 text-gray-600 hover:text-red-400 font-bold text-base transition px-1 z-10 cursor-pointer">&times;</button>
                 `;
+
+                // Edit click interceptor mechanics
+                card.addEventListener('click', (e) => {
+                    if (e.target.hasAttribute('data-delete')) {
+                        e.stopPropagation();
+                        removeItem(parseInt(e.target.getAttribute('data-delete')));
+                        return;
+                    }
+                    loadItemToEditor(originalIndex);
+                });
+
                 listContainer.appendChild(card);
             });
         }
 
-        // Delete item target
-        window.removeItem = function(index) {
+        // Populates UI controls dynamically from stored schema structures
+        function loadItemToEditor(index) {
+            resetFormState();
+            editingIndex = index;
+            const item = itemDataset[index];
+
+            document.getElementById('formTitle').innerText = `✏️ Editing Entry [${item.id}]`;
+            document.getElementById('submitFormBtn').className = "w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-lg transition shadow-md cursor-pointer text-sm tracking-wide";
+            document.getElementById('submitFormBtn').innerText = "💾 Update Item Profile";
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+            // Populate core nodes
+            document.getElementById('itemId').value = item.id || '';
+            document.getElementById('itemType').value = item.type || '';
+            document.getElementById('itemName').value = item.name || '';
+            document.getElementById('itemFullName').value = item.full_name || '';
+            document.getElementById('itemCategory').value = item.catagory || '';
+            document.getElementById('itemRelease').value = item.release_date || '';
+            document.getElementById('itemIcon').value = item.icon || '';
+            document.getElementById('itemDescription').value = item.description || '';
+            document.getElementById('itemTags').value = (item.tags || []).join(', ');
+            document.getElementById('buyPrice').value = item.buy_price ?? -1;
+            document.getElementById('sellPrice').value = item.sell_price ?? -1;
+
+            const stats = item.stats || {};
+
+            // Check core attributes structures mapping
+            if ('protection' in stats || 'blast_protection' in stats || 'speed' in stats) {
+                document.getElementById('includeCore').checked = true;
+                document.getElementById('coreFields').classList.remove('hidden');
+                document.getElementById('statProt').value = stats.protection ?? 0;
+                document.getElementById('statBlast').value = stats.blast_protection ?? 0;
+                document.getElementById('statSpeed').value = stats.speed ?? 0;
+            }
+
+            // Check farming configurations metrics
+            if ('grow_time' in stats || 'harvest_yield' in stats || 'obtained_from' in stats) {
+                document.getElementById('includeFarming').checked = true;
+                document.getElementById('farmingFields').classList.remove('hidden');
+                document.getElementById('farmGrow').value = stats.grow_time ?? 0;
+                document.getElementById('farmYield').value = stats.harvest_yield || '';
+                document.getElementById('farmSource').value = stats.obtained_from || '';
+            }
+
+            // Check modular body damage specifications mapping
+            if (stats.damage && stats.damage.player) {
+                document.getElementById('includeDamage').checked = true;
+                document.getElementById('damageFields').classList.remove('hidden');
+                const pl = stats.damage.player;
+                document.getElementById('dmgHead').value = pl.head ?? 0;
+                document.getElementById('dmgBody').value = pl.body ?? 0;
+                document.getElementById('dmgLegs').value = pl.legs ?? 0;
+                document.getElementById('dmgHands').value = pl.hands ?? 0;
+            }
+
+            // Check inventory parameters layout structures
+            if (stats.inventory) {
+                document.getElementById('includeInv').checked = true;
+                document.getElementById('invFields').classList.remove('hidden');
+                document.getElementById('invSlots').value = stats.inventory.slots ?? 0;
+                document.getElementById('invX').value = stats.inventory.x ?? 0;
+                document.getElementById('invY').value = stats.inventory.y ?? 0;
+            }
+
+            renderItems();
+        }
+
+        // Array splicing operation
+        function removeItem(index) {
+            if (editingIndex === index) resetFormState();
             itemDataset.splice(index, 1);
             renderItems();
         }
 
-        // Wipe dataset completely
+        // Complete dataset purge hook
         document.getElementById('clearAll').addEventListener('click', () => {
-            if (confirm("Are you sure you want to clear your current database? Any unsaved work will be lost.")) {
+            if (confirm("Purge all live storage nodes? Unexported data blocks will be destroyed.")) {
                 itemDataset = [];
+                resetFormState();
                 renderItems();
             }
         });
 
-        // Form handler to build data structures matching the scheme requested
+        // Form processing submit controller engine
         document.getElementById('itemForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // Construct structural stats configurations
-            const baseStats = {
-                protection: parseFloat(document.getElementById('statProt').value) || 0.0,
-                blast_protection: parseFloat(document.getElementById('statBlast').value) || 0.0,
-                speed: parseFloat(document.getElementById('statSpeed').value) || 0.0,
-                grow_time: parseInt(document.getElementById('statGrow').value) || 0
-            };
+            const baseStats = {};
+
+            if (document.getElementById('includeCore').checked) {
+                baseStats.protection = parseFloat(document.getElementById('statProt').value) || 0.0;
+                baseStats.blast_protection = parseFloat(document.getElementById('statBlast').value) || 0.0;
+                baseStats.speed = parseFloat(document.getElementById('statSpeed').value) || 0.0;
+            }
+
+            if (document.getElementById('includeFarming').checked) {
+                baseStats.grow_time = parseInt(document.getElementById('farmGrow').value) || 0;
+                baseStats.harvest_yield = document.getElementById('farmYield').value.trim();
+                baseStats.obtained_from = document.getElementById('farmSource').value.trim();
+            }
 
             if (document.getElementById('includeDamage').checked) {
                 baseStats.damage = {
@@ -273,37 +451,35 @@
                 };
             }
 
-            // Map string configuration directly into tags arrays 
             const tagsInput = document.getElementById('itemTags').value;
             const tagsArray = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(t => t.length > 0) : [];
 
-            const newItem = {
-                id: document.getElementById('itemId').value,
+            const constructedItem = {
+                id: document.getElementById('itemId').value.trim(),
                 name: document.getElementById('itemName').value.trim(),
                 full_name: document.getElementById('itemFullName').value.trim(),
                 description: document.getElementById('itemDescription').value.trim(),
                 icon: document.getElementById('itemIcon').value.trim(),
                 catagory: document.getElementById('itemCategory').value.trim(),
                 tags: tagsArray,
-                release_date: document.getElementById('itemRelease').value,
-                type: document.getElementById('itemType').value,
-                stats: baseStats
+                release_date: document.getElementById('itemRelease').value.trim() || "00/00/0000",
+                type: document.getElementById('itemType').value.trim(),
+                buy_price: parseInt(document.getElementById('buyPrice').value) ?? -1,
+                sell_price: parseInt(document.getElementById('sellPrice').value) ?? -1,
+                stats: Object.keys(baseStats).length > 0 ? baseStats : {}
             };
 
-            // Inject object into working dataset structure
-            itemDataset.push(newItem);
-            renderItems();
+            if (editingIndex !== null) {
+                itemDataset[editingIndex] = constructedItem;
+            } else {
+                itemDataset.push(constructedItem);
+            }
 
-            // Reset operational parts of inputs
-            document.getElementById('itemId').value = '';
-            document.getElementById('itemName').value = '';
-            document.getElementById('itemFullName').value = '';
-            document.getElementById('itemDescription').value = '';
-            document.getElementById('itemIcon').value = '';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            resetFormState();
+            renderItems();
         });
 
-        // Native JSON processing mechanisms (Local File Import)
+        // Local Storage JSON Uploader
         document.getElementById('importJson').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -316,62 +492,52 @@
                         itemDataset = [...itemDataset, ...parsedData];
                         renderItems();
                     } else {
-                        alert("Invalid JSON format. Expected an array of items.");
+                        alert("Invalid structure layout. Target requires standard object arrays.");
                     }
                 } catch (err) {
-                    alert("Error parsing file. Ensure it is valid JSON.");
+                    alert("Fatal error running syntax checks on compilation file parsing target.");
                 }
                 e.target.value = '';
             };
             reader.readAsText(file);
         });
 
-        // Remote Live Fetching Engine (Cache-Busting Fixed)
+        // Remote Cache-Busting Repository Pull Operation
         document.getElementById('loadLatest').addEventListener('click', async () => {
             const btn = document.getElementById('loadLatest');
             const originalText = btn.innerHTML;
             
-            btn.innerHTML = "⏳ Fetching...";
+            btn.innerHTML = "⏳ Streaming Network Blocks...";
             btn.disabled = true;
 
-            // Cache-busting parameter string forces GitHub's CDN to grab the freshest copy
             const remoteUrl = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?t=${Date.now()}`;
 
             try {
-                // FIXED: Removed custom Cache-Control headers to prevent a browser Preflight (OPTIONS) request.
-                // GitHub Raw blocks OPTIONS requests, causing CORS 403 errors.
-                const response = await fetch(remoteUrl, { 
-                    method: 'GET',
-                    cache: 'no-store' // Tells browser to bypass local caching layers safely
-                });
+                const response = await fetch(remoteUrl, { method: 'GET', cache: 'no-store' });
 
-                if (!response.ok) {
-                    throw new Error(`Server returned HTTP state code ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP state exception code ${response.status}`);
                 const remoteData = await response.json();
 
                 if (Array.isArray(remoteData)) {
                     itemDataset = [...itemDataset, ...remoteData];
                     renderItems();
-                    alert(`Successfully imported ${remoteData.length} fresh items from the repository metadata!`);
+                    alert(`Dataset synchronized successfully! Pulled ${remoteData.length} records into main system processing pipeline.`);
                 } else {
-                    alert("The remote JSON file fetched successfully, but its layout wasn't wrapped as an Array structure.");
+                    alert("Stream complete, but data profile formatting was invalid.");
                 }
-
             } catch (error) {
                 console.error(error);
-                alert(`Failed to load network asset: ${error.message}`);
+                alert(`CORS or structural access issue detected connecting to remote resource: ${error.message}`);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }
         });
 
-        // Dynamic System Data Serialization (Export Engine)
+        // Exporter Data Pipeline Serialization Engine
         document.getElementById('exportJson').addEventListener('click', () => {
             if (itemDataset.length === 0) {
-                alert("Nothing to export yet! Please import files or add entries first.");
+                alert("The record database is empty. Add entries before attempting output operations.");
                 return;
             }
             
