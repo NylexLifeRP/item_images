@@ -326,26 +326,23 @@
             reader.readAsText(file);
         });
 
-        // Remote Live Fetching Engine (Cache-Busting Enabled)
+        // Remote Live Fetching Engine (Cache-Busting Fixed)
         document.getElementById('loadLatest').addEventListener('click', async () => {
             const btn = document.getElementById('loadLatest');
             const originalText = btn.innerHTML;
             
-            // Visual loading state updates
             btn.innerHTML = "⏳ Fetching...";
             btn.disabled = true;
 
-            // Cache-busting parameter string appended to completely bypass GitHub CDNs/Browser caches
+            // Cache-busting parameter string forces GitHub's CDN to grab the freshest copy
             const remoteUrl = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?t=${Date.now()}`;
 
             try {
+                // FIXED: Removed custom Cache-Control headers to prevent a browser Preflight (OPTIONS) request.
+                // GitHub Raw blocks OPTIONS requests, causing CORS 403 errors.
                 const response = await fetch(remoteUrl, { 
                     method: 'GET',
-                    cache: 'no-store', // Forces browser to bypass HTTP caches entirely
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
-                    }
+                    cache: 'no-store' // Tells browser to bypass local caching layers safely
                 });
 
                 if (!response.ok) {
@@ -355,7 +352,6 @@
                 const remoteData = await response.json();
 
                 if (Array.isArray(remoteData)) {
-                    // Appends data directly into the active viewport array
                     itemDataset = [...itemDataset, ...remoteData];
                     renderItems();
                     alert(`Successfully imported ${remoteData.length} fresh items from the repository metadata!`);
@@ -365,9 +361,8 @@
 
             } catch (error) {
                 console.error(error);
-                alert(`Failed to load network asset: ${error.message}\nMake sure CORS policies allow this access point or the file path is correct.`);
+                alert(`Failed to load network asset: ${error.message}`);
             } finally {
-                // Restore button state
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }
