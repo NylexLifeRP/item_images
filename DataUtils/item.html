@@ -49,8 +49,8 @@
                     <input type="text" id="itemId" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm font-mono text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Asset Type (Gun, Clothing...)</label>
-                    <input type="text" id="itemType" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Asset Type (Gun, Clothing, Structure...)</label>
+                    <input type="text" id="itemType" required placeholder="e.g. gun, shirt, structure, medical" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
             </div>
 
@@ -104,24 +104,13 @@
 
             <div class="space-y-3 border-t border-[#27272a] pt-4 select-text">
                 
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
-                        <input type="checkbox" id="includeCore" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Core & Weapon Ballistics
-                    </label>
-                    <div id="coreFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-3 text-xs">
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-1">Armor Protection</label>
-                            <input type="number" step="0.01" id="statProt" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-1">Blast Resistance</label>
-                            <input type="number" step="0.01" id="statBlast" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-1">Speed Modifier</label>
-                            <input type="number" step="0.01" id="statSpeed" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
+                <div id="dynamicHint" class="text-[11px] text-[#52525b] italic font-mono text-center py-1">
+                    Type a valid item class above to filter specific layout metrics.
+                </div>
+
+                <div id="coreFields" class="hidden dynamic-section bg-[#0f0f11] p-3 rounded border border-blue-900/40 space-y-3 text-xs">
+                    <div class="text-[10px] font-semibold text-blue-400 uppercase tracking-wider border-b border-[#27272a] pb-1">💥 Weapon Ballistics & Performance</div>
+                    <div class="grid grid-cols-3 gap-3">
                         <div>
                             <label class="block text-[#a1a1aa] mb-1">Max Range (m)</label>
                             <input type="number" step="0.1" id="statRange" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
@@ -137,96 +126,100 @@
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
-                        <input type="checkbox" id="includeFarming" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Cultivation & Farming Node
-                    </label>
-                    <div id="farmingFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] space-y-3 text-xs">
+                <div id="armorFields" class="hidden dynamic-section bg-[#0f0f11] p-3 rounded border border-teal-900/40 space-y-3 text-xs">
+                    <div class="text-[10px] font-semibold text-teal-400 uppercase tracking-wider border-b border-[#27272a] pb-1">🛡️ Armor & Protection Profiles</div>
+                    <div class="grid grid-cols-3 gap-3">
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Growth Duration Metric (Seconds)</label>
-                            <input type="number" id="farmGrow" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 font-mono text-[#f4f4f5]">
+                            <label class="block text-[#a1a1aa] mb-1">Armor Protection</label>
+                            <input type="number" step="0.01" id="statProt" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Blast Resistance</label>
+                            <input type="number" step="0.01" id="statBlast" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Speed Modifier</label>
+                            <input type="number" step="0.01" id="statSpeed" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="damageFields" class="hidden dynamic-section bg-[#0f0f11] p-3 rounded border border-red-900/40 space-y-3 text-xs">
+                    <div class="text-[10px] font-semibold text-red-400 uppercase tracking-wider border-b border-[#27272a] pb-1">🎯 Entity Damage Multipliers</div>
+                    <div>
+                        <div class="text-[9px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">Anatomical Modifiers</div>
+                        <div class="grid grid-cols-4 gap-2">
                             <div>
-                                <label class="block text-[#a1a1aa] mb-1">Harvest Drop Yield ID</label>
-                                <input type="text" id="farmYield" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                <label class="block text-[#71717a] text-[9px] mb-0.5">Cranium (Head)</label>
+                                <input type="number" id="dmgHead" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                             </div>
                             <div>
-                                <label class="block text-[#a1a1aa] mb-1">Extraction Source Origin</label>
-                                <input type="text" id="farmSource" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                <label class="block text-[#71717a] text-[9px] mb-0.5">Torso (Chest)</label>
+                                <input type="number" id="dmgBody" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            </div>
+                            <div>
+                                <label class="block text-[#71717a] text-[9px] mb-0.5">Legs</label>
+                                <input type="number" id="dmgLegs" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            </div>
+                            <div>
+                                <label class="block text-[#71717a] text-[9px] mb-0.5">Hands</label>
+                                <input type="number" id="dmgHands" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-[9px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">Environment Targets</div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="block text-[#71717a] text-[9px] mb-0.5">Animal</label>
+                                <input type="number" id="dmgAnimal" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            </div>
+                            <div>
+                                <label class="block text-[#71717a] text-[9px] mb-0.5">Zombie</label>
+                                <input type="number" id="dmgZombie" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            </div>
+                            <div>
+                                <label class="block text-[#71717a] text-[9px] mb-0.5">Structures</label>
+                                <input type="number" id="dmgStructure" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
-                        <input type="checkbox" id="includeDamage" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Entity Damage Multipliers
-                    </label>
-                    <div id="damageFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] space-y-3 text-xs">
+                <div id="invFields" class="hidden dynamic-section bg-[#0f0f11] p-3 rounded border border-amber-900/40 grid grid-cols-3 gap-2 text-xs">
+                    <div class="col-span-3 text-[10px] font-semibold text-amber-400 uppercase tracking-wider border-b border-[#27272a] pb-1">🎒 Inventory Storage Capacity Grid</div>
+                    <div>
+                        <label class="block text-[#a1a1aa] mb-0.5">Total Capacity</label>
+                        <input type="number" id="invSlots" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                    </div>
+                    <div>
+                        <label class="block text-[#a1a1aa] mb-0.5">Width (X)</label>
+                        <input type="number" id="invX" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                    </div>
+                    <div>
+                        <label class="block text-[#a1a1aa] mb-0.5">Height (Y)</label>
+                        <input type="number" id="invY" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                    </div>
+                </div>
+
+                <div id="farmingFields" class="hidden dynamic-section bg-[#0f0f11] p-3 rounded border border-green-900/40 space-y-3 text-xs">
+                    <div class="col-span-3 text-[10px] font-semibold text-green-400 uppercase tracking-wider border-b border-[#27272a] pb-1">🌿 Cultivation & Agriculture Node</div>
+                    <div>
+                        <label class="block text-[#a1a1aa] mb-1">Growth Duration Metric (Seconds)</label>
+                        <input type="number" id="farmGrow" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 font-mono text-[#f4f4f5]">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">Player Structural Modifiers</div>
-                            <div class="grid grid-cols-4 gap-2">
-                                <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Skull (Head)</label>
-                                    <input type="number" id="dmgHead" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                                </div>
-                                <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Torso (Chest)</label>
-                                    <input type="number" id="dmgBody" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                                </div>
-                                <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Spine (Legs)</label>
-                                    <input type="number" id="dmgLegs" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                                </div>
-                                <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Extrem. (Hands)</label>
-                                    <input type="number" id="dmgHands" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                                </div>
-                            </div>
+                            <label class="block text-[#a1a1aa] mb-1">Harvest Drop Yield ID</label>
+                            <input type="text" id="farmYield" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">Environment Species Multipliers</div>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Animal Target</label>
-                                    <input type="number" id="dmgAnimal" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                                </div>
-                                <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Zombie Target</label>
-                                    <input type="number" id="dmgZombie" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                                </div>
-                                <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Structure / Build</label>
-                                    <input type="number" id="dmgStructure" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                                </div>
-                            </div>
+                            <label class="block text-[#a1a1aa] mb-1">Extraction Source Origin</label>
+                            <input type="text" id="farmSource" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
-                        <input type="checkbox" id="includeInv" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Clothing Storage Grid Dimensions
-                    </label>
-                    <div id="invFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-2 text-xs">
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Total Capacity</label>
-                            <input type="number" id="invSlots" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Width Columns (X)</label>
-                            <input type="number" id="invX" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Height Rows (Y)</label>
-                            <input type="number" id="invY" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="pt-2 mt-auto shrink-0 select-none">
@@ -285,18 +278,51 @@
             localStorage.setItem('unturned_runtime_cache', JSON.stringify(itemDataset));
         }
 
-        // Configuration Module Visibility Layout Toggles
-        const activeToggles = [
-            { check: 'includeCore', target: 'coreFields' },
-            { check: 'includeFarming', target: 'farmingFields' },
-            { check: 'includeDamage', target: 'damageFields' },
-            { check: 'includeInv', target: 'invFields' }
-        ];
-        activeToggles.forEach(toggle => {
-            document.getElementById(toggle.check).addEventListener('change', (e) => {
-                document.getElementById(toggle.target).classList.toggle('hidden', !e.target.checked);
-            });
+        // Realtime Form Input Field Watcher for Smart Type Inferences
+        const inputTypeField = document.getElementById('itemType');
+        inputTypeField.addEventListener('input', (e) => {
+            evaluateDynamicLayoutLayers(e.target.value.toLowerCase().trim());
         });
+
+        function evaluateDynamicLayoutLayers(typeStr) {
+            // Hide all specialized metrics layers safely first
+            document.querySelectorAll('.dynamic-section').forEach(el => el.classList.add('hidden'));
+            const hint = document.getElementById('dynamicHint');
+            hint.classList.remove('hidden');
+
+            if (!typeStr) return;
+
+            // In-game grouping classifications lookup conditions
+            const matchesWeapon = ['gun', 'weapon', 'melee', 'rifle', 'pistol', 'shotgun', 'smg'];
+            const matchesArmor  = ['clothing', 'shirt', 'pants', 'vest', 'hat', 'helmet', 'backpack', 'mask'];
+            const matchesFarming = ['farming', 'food', 'crop', 'seed', 'medical', 'christmas'];
+            const matchesStructure = ['structure', 'barricade', 'storage'];
+
+            let matchedAny = false;
+
+            if (matchesWeapon.some(v => typeStr.includes(v))) {
+                document.getElementById('coreFields').classList.remove('hidden');
+                document.getElementById('damageFields').classList.remove('hidden');
+                matchedAny = true;
+            }
+            if (matchesArmor.some(v => typeStr.includes(v))) {
+                document.getElementById('armorFields').classList.remove('hidden');
+                document.getElementById('invFields').classList.remove('hidden');
+                matchedAny = true;
+            }
+            if (matchesFarming.some(v => typeStr.includes(v))) {
+                document.getElementById('farmingFields').classList.remove('hidden');
+                matchedAny = true;
+            }
+            if (matchesStructure.some(v => typeStr.includes(v))) {
+                document.getElementById('invFields').classList.remove('hidden');
+                matchedAny = true;
+            }
+
+            if (matchedAny) {
+                hint.classList.add('hidden');
+            }
+        }
 
         // Search Scanner Event Hook
         document.getElementById('searchBar').addEventListener('input', () => renderItems());
@@ -310,7 +336,8 @@
             document.getElementById('submitFormBtn').innerText = "Commit Entry to Dataset";
             document.getElementById('cancelEditBtn').classList.add('hidden');
             
-            activeToggles.forEach(toggle => document.getElementById(toggle.target).classList.add('hidden'));
+            document.querySelectorAll('.dynamic-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById('dynamicHint').classList.remove('hidden');
             
             document.getElementById('buyPrice').value = "-1";
             document.getElementById('sellPrice').value = "-1";
@@ -407,34 +434,23 @@
             document.getElementById('buyPrice').value = record.buy_price ?? -1;
             document.getElementById('sellPrice').value = record.sell_price ?? -1;
 
+            // Trigger dynamic interface layout restructuring instantly
+            evaluateDynamicLayoutLayers((record.type || '').toLowerCase().trim());
+
             const statsBlock = record.stats || {};
 
-            // Restore Weapon Ballistics / Core attributes
-            if ('protection' in statsBlock || 'blast_protection' in statsBlock || 'speed' in statsBlock || 'range' in statsBlock || 'dps' in statsBlock || 'fire_rate' in statsBlock) {
-                document.getElementById('includeCore').checked = true;
-                document.getElementById('coreFields').classList.remove('hidden');
-                document.getElementById('statProt').value = statsBlock.protection ?? 0;
-                document.getElementById('statBlast').value = statsBlock.blast_protection ?? 0;
-                document.getElementById('statSpeed').value = statsBlock.speed ?? 0;
-                document.getElementById('statRange').value = statsBlock.range ?? 0;
-                document.getElementById('statDps').value = statsBlock.dps ?? 0;
-                document.getElementById('statFireRate').value = statsBlock.fire_rate ?? 0;
-            }
+            // Map values back safely regardless of visibility configuration state
+            document.getElementById('statRange').value = statsBlock.range ?? 0;
+            document.getElementById('statDps').value = statsBlock.dps ?? 0;
+            document.getElementById('statFireRate').value = statsBlock.fire_rate ?? 0;
+            document.getElementById('statProt').value = statsBlock.protection ?? 0;
+            document.getElementById('statBlast').value = statsBlock.blast_protection ?? 0;
+            document.getElementById('statSpeed').value = statsBlock.speed ?? 0;
+            document.getElementById('farmGrow').value = statsBlock.grow_time ?? 0;
+            document.getElementById('farmYield').value = statsBlock.harvest_yield || '';
+            document.getElementById('farmSource').value = statsBlock.obtained_from || '';
 
-            // Restore Agricultural Cultivation Configs
-            if ('grow_time' in statsBlock || 'harvest_yield' in statsBlock || 'obtained_from' in statsBlock) {
-                document.getElementById('includeFarming').checked = true;
-                document.getElementById('farmingFields').classList.remove('hidden');
-                document.getElementById('farmGrow').value = statsBlock.grow_time ?? 0;
-                document.getElementById('farmYield').value = statsBlock.harvest_yield || '';
-                document.getElementById('farmSource').value = statsBlock.obtained_from || '';
-            }
-
-            // Restore Expanded Target Damage Config Matrix Nodes
             if (statsBlock.damage) {
-                document.getElementById('includeDamage').checked = true;
-                document.getElementById('damageFields').classList.remove('hidden');
-                
                 if (statsBlock.damage.player) {
                     const targetPlayer = statsBlock.damage.player;
                     document.getElementById('dmgHead').value = targetPlayer.head ?? 0;
@@ -447,10 +463,7 @@
                 document.getElementById('dmgStructure').value = statsBlock.damage.structures ?? 0;
             }
 
-            // Restore Clothing Inventory Dimensions
             if (statsBlock.inventory) {
-                document.getElementById('includeInv').checked = true;
-                document.getElementById('invFields').classList.remove('hidden');
                 document.getElementById('invSlots').value = statsBlock.inventory.slots ?? 0;
                 document.getElementById('invX').value = statsBlock.inventory.x ?? 0;
                 document.getElementById('invY').value = statsBlock.inventory.y ?? 0;
@@ -479,23 +492,18 @@
         document.getElementById('itemForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const compiledStats = {};
+            const itemTypeVal = document.getElementById('itemType').value.toLowerCase().trim();
 
-            if (document.getElementById('includeCore').checked) {
-                compiledStats.protection = parseFloat(document.getElementById('statProt').value) || 0.0;
-                compiledStats.blast_protection = parseFloat(document.getElementById('statBlast').value) || 0.0;
-                compiledStats.speed = parseFloat(document.getElementById('statSpeed').value) || 0.0;
+            const isWeapon = ['gun', 'weapon', 'melee', 'rifle', 'pistol', 'shotgun', 'smg'].some(v => itemTypeVal.includes(v));
+            const isArmor  = ['clothing', 'shirt', 'pants', 'vest', 'hat', 'helmet', 'backpack', 'mask'].some(v => itemTypeVal.includes(v));
+            const isFarming = ['farming', 'food', 'crop', 'seed', 'medical', 'christmas'].some(v => itemTypeVal.includes(v));
+            const isStructure = ['structure', 'barricade', 'storage'].some(v => itemTypeVal.includes(v));
+
+            if (isWeapon) {
                 compiledStats.range = parseFloat(document.getElementById('statRange').value) || 0.0;
                 compiledStats.dps = parseInt(document.getElementById('statDps').value) || 0;
                 compiledStats.fire_rate = parseFloat(document.getElementById('statFireRate').value) || 0.0;
-            }
-
-            if (document.getElementById('includeFarming').checked) {
-                compiledStats.grow_time = parseInt(document.getElementById('farmGrow').value) || 0;
-                compiledStats.harvest_yield = document.getElementById('farmYield').value.trim();
-                compiledStats.obtained_from = document.getElementById('farmSource').value.trim();
-            }
-
-            if (document.getElementById('includeDamage').checked) {
+                
                 compiledStats.damage = {
                     player: {
                         head: parseInt(document.getElementById('dmgHead').value) || 0,
@@ -509,12 +517,30 @@
                 };
             }
 
-            if (document.getElementById('includeInv').checked) {
+            if (isArmor) {
+                compiledStats.protection = parseFloat(document.getElementById('statProt').value) || 0.0;
+                compiledStats.blast_protection = parseFloat(document.getElementById('statBlast').value) || 0.0;
+                compiledStats.speed = parseFloat(document.getElementById('statSpeed').value) || 0.0;
+                
                 compiledStats.inventory = {
                     slots: parseInt(document.getElementById('invSlots').value) || 0,
                     x: parseInt(document.getElementById('invX').value) || 0,
                     y: parseInt(document.getElementById('invY').value) || 0
                 };
+            }
+
+            if (isStructure) {
+                compiledStats.inventory = {
+                    slots: parseInt(document.getElementById('invSlots').value) || 0,
+                    x: parseInt(document.getElementById('invX').value) || 0,
+                    y: parseInt(document.getElementById('invY').value) || 0
+                };
+            }
+
+            if (isFarming) {
+                compiledStats.grow_time = parseInt(document.getElementById('farmGrow').value) || 0;
+                compiledStats.harvest_yield = document.getElementById('farmYield').value.trim();
+                compiledStats.obtained_from = document.getElementById('farmSource').value.trim();
             }
 
             const unprocessedTags = document.getElementById('itemTags').value;
@@ -570,7 +596,7 @@
             trackingReader.readAsText(rawTargetFile);
         });
 
-        // Safe Network Fetch Engine
+        // CORS Fallback Bypass Master Fetch Engine
         document.getElementById('loadLatest').addEventListener('click', async () => {
             const activationBtn = document.getElementById('loadLatest');
             const placeholderFallbackText = activationBtn.innerHTML;
@@ -578,13 +604,15 @@
             activationBtn.innerHTML = "⏳ Syncing Vector Stream...";
             activationBtn.disabled = true;
 
-            const targetSourceUri = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?nocache=${Date.now()}`;
+            // Appended public open-cors parsing endpoint to bypass the raw 403 GitHub preflight restriction blocks
+            const targetSourceUri = "https://api.allorigins.win/get?url=" + encodeURIComponent(`https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?nocache=${Date.now()}`);
 
             try {
                 const cloudstreamResponse = await fetch(targetSourceUri);
                 if (!cloudstreamResponse.ok) throw new Error(`HTTP layer Exception Status Code: ${cloudstreamResponse.status}`);
                 
-                const responsePayloadArray = await cloudstreamResponse.json();
+                const proxyWrapper = await cloudstreamResponse.json();
+                const responsePayloadArray = JSON.parse(proxyWrapper.contents);
 
                 if (Array.isArray(responsePayloadArray)) {
                     itemDataset = [...itemDataset, ...responsePayloadArray];
