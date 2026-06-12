@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Console - Item Registry Suite</title>
+    <title>Unturned Asset Registry Console</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -18,19 +18,19 @@
 
     <nav class="bg-[#18181b] border-b border-[#27272a] px-6 py-3 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-3">
-            <div class="bg-[#f38020] text-black font-black p-1.5 rounded text-xs uppercase tracking-wider">Console</div>
-            <h1 class="text-sm font-semibold tracking-wide text-[#f4f4f5]">Nylex RP / Data Management Matrix</h1>
+            <div class="bg-[#f38020] text-black font-black p-1.5 rounded text-xs uppercase tracking-wider">Unturned API</div>
+            <h1 class="text-sm font-semibold tracking-wide text-[#f4f4f5]">Asset Compiler & Registry Matrix</h1>
         </div>
         <div class="flex items-center gap-2">
             <button id="loadLatest" class="bg-[#27272a] hover:bg-[#3f3f46] text-[#f4f4f5] text-xs font-medium px-3 py-1.5 rounded transition border border-[#3f3f46] flex items-center gap-1.5 cursor-pointer">
-                🔄 Load Latest
+                🔄 Sync Master Registry
             </button>
             <label class="bg-[#27272a] hover:bg-[#3f3f46] text-[#f4f4f5] text-xs font-medium px-3 py-1.5 rounded transition border border-[#3f3f46] flex items-center gap-1.5 cursor-pointer">
                 📂 Import JSON
                 <input type="file" id="importJson" accept=".json" class="hidden">
             </label>
             <button id="exportJson" class="bg-[#f38020] hover:bg-[#fa923e] text-black text-xs font-bold px-3 py-1.5 rounded transition flex items-center gap-1.5 cursor-pointer">
-                💾 Export JSON
+                💾 Export items.json
             </button>
         </div>
     </nav>
@@ -39,28 +39,28 @@
         
         <form id="itemForm" class="lg:col-span-5 bg-[#18181b] border border-[#27272a] rounded-lg p-5 flex flex-col h-full space-y-4 overflow-y-auto shadow-xl">
             <div class="flex justify-between items-center border-b border-[#27272a] pb-3 shrink-0">
-                <h2 id="formTitle" class="text-sm font-semibold text-[#f4f4f5] uppercase tracking-wider">Create Profile</h2>
-                <button type="button" id="cancelEditBtn" class="hidden text-xs bg-[#27272a] hover:bg-[#3f3f46] text-[#a1a1aa] px-2 py-1 rounded border border-[#3f3f46] cursor-pointer">Cancel Route</button>
+                <h2 id="formTitle" class="text-sm font-semibold text-[#f4f4f5] uppercase tracking-wider">Compile New Asset</h2>
+                <button type="button" id="cancelEditBtn" class="hidden text-xs bg-[#27272a] hover:bg-[#3f3f46] text-[#a1a1aa] px-2 py-1 rounded border border-[#3f3f46] cursor-pointer">Abort Modification</button>
             </div>
             
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Item ID</label>
-                    <input type="text" id="itemId" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Unturned Item ID</label>
+                    <input type="text" id="itemId" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm font-mono text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Item Type</label>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Asset Type (Gun, Clothing...)</label>
                     <input type="text" id="itemType" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">System Name</label>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Registry System Name</label>
                     <input type="text" id="itemName" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Full / UI Display Name</label>
+                    <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">In-Game Display Name</label>
                     <input type="text" id="itemFullName" required class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
             </div>
@@ -77,27 +77,27 @@
             </div>
 
             <div>
-                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Asset Link (Icon URL)</label>
-                <input type="url" id="itemIcon" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-xs text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
+                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Asset Link (Icon PNG URL)</label>
+                <input type="url" id="itemIcon" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-xs font-mono text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
             </div>
 
             <div>
-                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Summary Description</label>
+                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Item Description / Lore</label>
                 <textarea id="itemDescription" rows="2" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020] resize-none"></textarea>
             </div>
 
             <div>
-                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Global Tags (Comma Delimited)</label>
+                <label class="block text-[11px] font-medium text-[#a1a1aa] mb-1">Global Filter Tags (Comma Delimited)</label>
                 <input type="text" id="itemTags" class="w-full bg-[#0f0f11] border border-[#27272a] rounded p-2 text-sm text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
             </div>
 
             <div class="bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-[10px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">System Buy Price</label>
+                    <label class="block text-[10px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">System Economy Buy Price</label>
                     <input type="number" id="buyPrice" value="-1" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1.5 text-sm font-mono text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">System Sell Price</label>
+                    <label class="block text-[10px] font-semibold text-[#a1a1aa] uppercase tracking-wider mb-1">System Economy Sell Price</label>
                     <input type="number" id="sellPrice" value="-1" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1.5 text-sm font-mono text-[#f4f4f5] focus:outline-none focus:border-[#f38020]">
                 </div>
             </div>
@@ -107,31 +107,31 @@
                 <div class="space-y-2">
                     <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
                         <input type="checkbox" id="includeCore" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Core & Ballistic Attributes
+                        Include Core & Weapon Ballistics
                     </label>
                     <div id="coreFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-3 text-xs">
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Protection</label>
-                            <input type="number" step="0.1" id="statProt" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            <label class="block text-[#a1a1aa] mb-1">Armor Protection</label>
+                            <input type="number" step="0.01" id="statProt" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Blast Prot.</label>
-                            <input type="number" step="0.1" id="statBlast" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            <label class="block text-[#a1a1aa] mb-1">Blast Resistance</label>
+                            <input type="number" step="0.01" id="statBlast" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Speed Mod.</label>
-                            <input type="number" step="0.1" id="statSpeed" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            <label class="block text-[#a1a1aa] mb-1">Speed Modifier</label>
+                            <input type="number" step="0.01" id="statSpeed" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Range (m)</label>
+                            <label class="block text-[#a1a1aa] mb-1">Max Range (m)</label>
                             <input type="number" step="0.1" id="statRange" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Base DPS</label>
+                            <label class="block text-[#a1a1aa] mb-1">Calculated DPS</label>
                             <input type="number" id="statDps" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Rounds / Sec</label>
+                            <label class="block text-[#a1a1aa] mb-1">Rounds / Second</label>
                             <input type="number" step="0.1" id="statFireRate" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-[#a1a1aa] mb-1">Harvest Drop Yield Node</label>
+                                <label class="block text-[#a1a1aa] mb-1">Harvest Drop Yield ID</label>
                                 <input type="text" id="farmYield" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                             </div>
                             <div>
@@ -163,43 +163,43 @@
                 <div class="space-y-2">
                     <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
                         <input type="checkbox" id="includeDamage" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Multi-Target Damage Modules
+                        Include Entity Damage Multipliers
                     </label>
                     <div id="damageFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] space-y-3 text-xs">
                         <div>
-                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">Player Sub-Anatomy</div>
+                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">Player Structural Modifiers</div>
                             <div class="grid grid-cols-4 gap-2">
                                 <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Cranium</label>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Skull (Head)</label>
                                     <input type="number" id="dmgHead" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                                 </div>
                                 <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Torso</label>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Torso (Chest)</label>
                                     <input type="number" id="dmgBody" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                                 </div>
                                 <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Legs</label>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Spine (Legs)</label>
                                     <input type="number" id="dmgLegs" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                                 </div>
                                 <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Hands</label>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Extrem. (Hands)</label>
                                     <input type="number" id="dmgHands" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">External Target Profiles</div>
+                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">Environment Species Multipliers</div>
                             <div class="grid grid-cols-3 gap-2">
                                 <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Animal Damage</label>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Animal Target</label>
                                     <input type="number" id="dmgAnimal" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                                 </div>
                                 <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Zombie Damage</label>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Zombie Target</label>
                                     <input type="number" id="dmgZombie" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                                 </div>
                                 <div>
-                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Structure Dmg</label>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Structure / Build</label>
                                     <input type="number" id="dmgStructure" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                                 </div>
                             </div>
@@ -210,19 +210,19 @@
                 <div class="space-y-2">
                     <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
                         <input type="checkbox" id="includeInv" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Clothing / Spatial Container Capacity
+                        Include Clothing Storage Grid Dimensions
                     </label>
                     <div id="invFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-2 text-xs">
                         <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Total Allocation</label>
+                            <label class="block text-[#a1a1aa] mb-0.5">Total Capacity</label>
                             <input type="number" id="invSlots" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dim X</label>
+                            <label class="block text-[#a1a1aa] mb-0.5">Width Columns (X)</label>
                             <input type="number" id="invX" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dim Y</label>
+                            <label class="block text-[#a1a1aa] mb-0.5">Height Rows (Y)</label>
                             <input type="number" id="invY" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                     </div>
@@ -243,21 +243,21 @@
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-[#f38020] animate-pulse"></span>
                         <h2 class="text-xs font-semibold text-[#f4f4f5] uppercase tracking-wider">
-                            Active System Indexes (<span id="itemCount">0</span>)
+                            Active Registry Indices (<span id="itemCount">0</span>)
                         </h2>
                     </div>
-                    <button id="clearAll" class="text-xs text-[#a1a1aa] hover:text-[#f4f4f5] transition cursor-pointer font-medium">Purge All Matrices</button>
+                    <button id="clearAll" class="text-xs text-[#a1a1aa] hover:text-[#f4f4f5] transition cursor-pointer font-medium">Purge Workspace Cache</button>
                 </div>
                 
                 <div class="relative select-text">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#52525b] text-xs">🔍</span>
-                    <input type="text" id="searchBar" class="w-full bg-[#0f0f11] border border-[#27272a] rounded pl-9 pr-4 py-2 text-xs text-[#f4f4f5] focus:outline-none focus:border-[#f38020] font-mono" placeholder="Filter indexes based on dynamic target ID, descriptive properties, tags...">
+                    <input type="text" id="searchBar" class="w-full bg-[#0f0f11] border border-[#27272a] rounded pl-9 pr-4 py-2 text-xs text-[#f4f4f5] focus:outline-none focus:border-[#f38020] font-mono" placeholder="Query active cache via asset ID, specific item names, category, or tags...">
                 </div>
             </div>
             
             <div id="itemList" class="grid grid-cols-1 xl:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 align-top content-start select-text">
                 <div id="emptyState" class="col-span-full text-center text-[#52525b] py-24 text-xs font-mono select-none">
-                    No runtime items map within active cache memory arrays. Pull system files or create profiles to map nodes.
+                    No matching asset definitions tracked inside active system memory. Click Sync to pull down latest code arrays.
                 </div>
             </div>
         </div>
@@ -267,6 +267,23 @@
     <script>
         let itemDataset = [];
         let editingIndex = null;
+
+        // Initialize Workspace Sync from Local Storage Cache Layers
+        window.addEventListener('DOMContentLoaded', () => {
+            const cachedDataset = localStorage.getItem('unturned_runtime_cache');
+            if (cachedDataset) {
+                try {
+                    itemDataset = JSON.parse(cachedDataset);
+                    renderItems();
+                } catch (e) {
+                    console.error("Local workspace array validation failed to safely unwrap payload.", e);
+                }
+            }
+        });
+
+        function synchronizeLocalCache() {
+            localStorage.setItem('unturned_runtime_cache', JSON.stringify(itemDataset));
+        }
 
         // Configuration Module Visibility Layout Toggles
         const activeToggles = [
@@ -288,7 +305,7 @@
         function resetFormState() {
             editingIndex = null;
             document.getElementById('itemForm').reset();
-            document.getElementById('formTitle').innerText = "Create Profile";
+            document.getElementById('formTitle').innerText = "Compile New Asset";
             document.getElementById('submitFormBtn').className = "w-full bg-[#f38020] hover:bg-[#fa923e] text-black font-bold py-2 rounded transition shadow text-xs uppercase tracking-wider cursor-pointer";
             document.getElementById('submitFormBtn').innerText = "Commit Entry to Dataset";
             document.getElementById('cancelEditBtn').classList.add('hidden');
@@ -346,9 +363,9 @@
                 nodeCard.innerHTML = `
                     <img src="${item.icon || missingAssetVector}" onerror="this.src='${missingAssetVector}'" class="w-10 h-10 rounded bg-[#0f0f11] object-contain p-1 border border-[#27272a] shrink-0">
                     <div class="flex-1 min-w-0 pointer-events-none">
-                        <div class="text-xs font-semibold text-[#f4f4f5] truncate pr-4">${item.full_name || item.name || 'Undefined Index'}</div>
-                        <div class="text-[10px] text-[#52525b] font-mono mt-0.5 truncate">ID: ${item.id || 'Null'}</div>
-                        <div class="text-[10px] text-[#a1a1aa] font-mono mt-1">B: ${item.buy_price ?? -1} / S: ${item.sell_price ?? -1}</div>
+                        <div class="text-xs font-semibold text-[#f4f4f5] truncate pr-4">${item.full_name || item.name || 'Undefined Item'}</div>
+                        <div class="text-[10px] text-[#52525b] font-mono mt-0.5 truncate">Asset ID: ${item.id || 'Null'}</div>
+                        <div class="text-[10px] text-[#a1a1aa] font-mono mt-1">Type: ${item.type || 'N/A'} • B: ${item.buy_price ?? -1} / S: ${item.sell_price ?? -1}</div>
                         <div class="flex flex-wrap gap-1 mt-2">${markupTags}</div>
                     </div>
                     <button data-delete="${originalIndex}" class="absolute top-1.5 right-1.5 text-[#52525b] hover:text-red-400 font-bold text-sm transition px-1 z-10 cursor-pointer select-none group-hover:text-[#a1a1aa]">&times;</button>
@@ -373,7 +390,7 @@
             editingIndex = index;
             const record = itemDataset[index];
 
-            document.getElementById('formTitle').innerText = `Modify Node [${record.id}]`;
+            document.getElementById('formTitle').innerText = `Modify Node [ID: ${record.id}]`;
             document.getElementById('submitFormBtn').className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded transition shadow text-xs uppercase tracking-wider cursor-pointer";
             document.getElementById('submitFormBtn').innerText = "Update Registered Node";
             document.getElementById('cancelEditBtn').classList.remove('hidden');
@@ -392,7 +409,7 @@
 
             const statsBlock = record.stats || {};
 
-            // Restore Combat & Core Fields Map
+            // Restore Weapon Ballistics / Core attributes
             if ('protection' in statsBlock || 'blast_protection' in statsBlock || 'speed' in statsBlock || 'range' in statsBlock || 'dps' in statsBlock || 'fire_rate' in statsBlock) {
                 document.getElementById('includeCore').checked = true;
                 document.getElementById('coreFields').classList.remove('hidden');
@@ -430,7 +447,7 @@
                 document.getElementById('dmgStructure').value = statsBlock.damage.structures ?? 0;
             }
 
-            // Restore Internal Storage Area Matrices
+            // Restore Clothing Inventory Dimensions
             if (statsBlock.inventory) {
                 document.getElementById('includeInv').checked = true;
                 document.getElementById('invFields').classList.remove('hidden');
@@ -445,12 +462,14 @@
         function removeItem(index) {
             if (editingIndex === index) resetFormState();
             itemDataset.splice(index, 1);
+            synchronizeLocalCache();
             renderItems();
         }
 
         document.getElementById('clearAll').addEventListener('click', () => {
-            if (confirm("Purge current live profile cache arrays entirely?")) {
+            if (confirm("Completely wipe active memory cache? All unsaved data states will be dropped.")) {
                 itemDataset = [];
+                localStorage.removeItem('unturned_runtime_cache');
                 resetFormState();
                 renderItems();
             }
@@ -523,6 +542,7 @@
             }
 
             resetFormState();
+            synchronizeLocalCache();
             renderItems();
         });
 
@@ -537,6 +557,7 @@
                     const decodedArrayStructure = JSON.parse(evt.target.result);
                     if (Array.isArray(decodedArrayStructure)) {
                         itemDataset = [...itemDataset, ...decodedArrayStructure];
+                        synchronizeLocalCache();
                         renderItems();
                     } else {
                         alert("Malformed internal profile format. Top level must represent array data arrays.");
@@ -549,29 +570,28 @@
             trackingReader.readAsText(rawTargetFile);
         });
 
-        // Safe Micro-Streaming Preflight Bypassing Network Request Engine
+        // Safe Network Fetch Engine
         document.getElementById('loadLatest').addEventListener('click', async () => {
             const activationBtn = document.getElementById('loadLatest');
             const placeholderFallbackText = activationBtn.innerHTML;
             
-            activationBtn.innerHTML = "⏳ Connecting Vector Stream...";
+            activationBtn.innerHTML = "⏳ Syncing Vector Stream...";
             activationBtn.disabled = true;
 
-            // Appending runtime ticks directly to URL prevents client browser proxy cache storage without causing CORS preflights
             const targetSourceUri = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?nocache=${Date.now()}`;
 
             try {
-                // Stripped down request footprint avoids matching 403 authorization rules
                 const cloudstreamResponse = await fetch(targetSourceUri);
-                if (!cloudstreamResponse.ok) throw new Error(`Server returned HTTP state code: ${cloudstreamResponse.status}`);
+                if (!cloudstreamResponse.ok) throw new Error(`HTTP layer Exception Status Code: ${cloudstreamResponse.status}`);
                 
                 const responsePayloadArray = await cloudstreamResponse.json();
 
                 if (Array.isArray(responsePayloadArray)) {
                     itemDataset = [...itemDataset, ...responsePayloadArray];
+                    synchronizeLocalCache();
                     renderItems();
                 } else {
-                    alert("Mapping mismatch Exception: Input signature didn't decode to systemic Node Collection Array.");
+                    alert("Streaming payload error: Target database did not decode into a unified object array list.");
                 }
             } catch (error) {
                 console.error(error);
