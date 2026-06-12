@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloudflare Style RP Item Suite</title>
+    <title>Console - Item Registry Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -14,12 +14,12 @@
         ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
     </style>
 </head>
-<body class="bg-[#0f0f11] text-[#f4f4f5] min-h-screen flex flex-col antialiased">
+<body class="bg-[#0f0f11] text-[#f4f4f5] min-h-screen flex flex-col antialiased select-none">
 
     <nav class="bg-[#18181b] border-b border-[#27272a] px-6 py-3 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-3">
             <div class="bg-[#f38020] text-black font-black p-1.5 rounded text-xs uppercase tracking-wider">Console</div>
-            <h1 class="text-sm font-semibold tracking-wide text-[#f4f4f5]">Nylex RP / Item Management</h1>
+            <h1 class="text-sm font-semibold tracking-wide text-[#f4f4f5]">Nylex RP / Data Management Matrix</h1>
         </div>
         <div class="flex items-center gap-2">
             <button id="loadLatest" class="bg-[#27272a] hover:bg-[#3f3f46] text-[#f4f4f5] text-xs font-medium px-3 py-1.5 rounded transition border border-[#3f3f46] flex items-center gap-1.5 cursor-pointer">
@@ -35,7 +35,7 @@
         </div>
     </nav>
 
-    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-4rem)] overflow-hidden">
+    <main class="flex-1 max-w-[1650px] w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-4rem)] overflow-hidden">
         
         <form id="itemForm" class="lg:col-span-5 bg-[#18181b] border border-[#27272a] rounded-lg p-5 flex flex-col h-full space-y-4 overflow-y-auto shadow-xl">
             <div class="flex justify-between items-center border-b border-[#27272a] pb-3 shrink-0">
@@ -102,12 +102,12 @@
                 </div>
             </div>
 
-            <div class="space-y-3 border-t border-[#27272a] pt-4">
+            <div class="space-y-3 border-t border-[#27272a] pt-4 select-text">
                 
                 <div class="space-y-2">
                     <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
                         <input type="checkbox" id="includeCore" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Core Combat Attributes
+                        Include Core & Ballistic Attributes
                     </label>
                     <div id="coreFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-3 text-xs">
                         <div>
@@ -119,8 +119,20 @@
                             <input type="number" step="0.1" id="statBlast" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-1">Speed Modifier</label>
+                            <label class="block text-[#a1a1aa] mb-1">Speed Mod.</label>
                             <input type="number" step="0.1" id="statSpeed" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Range (m)</label>
+                            <input type="number" step="0.1" id="statRange" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Base DPS</label>
+                            <input type="number" id="statDps" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                        </div>
+                        <div>
+                            <label class="block text-[#a1a1aa] mb-1">Rounds / Sec</label>
+                            <input type="number" step="0.1" id="statFireRate" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                     </div>
                 </div>
@@ -151,24 +163,46 @@
                 <div class="space-y-2">
                     <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
                         <input type="checkbox" id="includeDamage" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Anatomical Damage Multipliers
+                        Include Multi-Target Damage Modules
                     </label>
-                    <div id="damageFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-4 gap-2 text-xs">
+                    <div id="damageFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] space-y-3 text-xs">
                         <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Cranium</label>
-                            <input type="number" id="dmgHead" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">Player Sub-Anatomy</div>
+                            <div class="grid grid-cols-4 gap-2">
+                                <div>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Cranium</label>
+                                    <input type="number" id="dmgHead" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                </div>
+                                <div>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Torso</label>
+                                    <input type="number" id="dmgBody" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                </div>
+                                <div>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Legs</label>
+                                    <input type="number" id="dmgLegs" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                </div>
+                                <div>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Hands</label>
+                                    <input type="number" id="dmgHands" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Torso</label>
-                            <input type="number" id="dmgBody" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Legs</label>
-                            <input type="number" id="dmgLegs" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
-                        </div>
-                        <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Hands</label>
-                            <input type="number" id="dmgHands" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                            <div class="text-[10px] font-semibold text-[#f38020] uppercase tracking-wider mb-1.5">External Target Profiles</div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Animal Damage</label>
+                                    <input type="number" id="dmgAnimal" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                </div>
+                                <div>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Zombie Damage</label>
+                                    <input type="number" id="dmgZombie" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                </div>
+                                <div>
+                                    <label class="block text-[#a1a1aa] text-[9px] mb-0.5">Structure Dmg</label>
+                                    <input type="number" id="dmgStructure" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,7 +210,7 @@
                 <div class="space-y-2">
                     <label class="flex items-center gap-2.5 text-xs text-[#e4e4e7] font-medium cursor-pointer select-none">
                         <input type="checkbox" id="includeInv" class="rounded border-[#3f3f46] bg-[#0f0f11] text-[#f38020] focus:ring-0 focus:ring-offset-0">
-                        Include Container Boundary Spatial Grid
+                        Include Clothing / Spatial Container Capacity
                     </label>
                     <div id="invFields" class="hidden bg-[#0f0f11] p-3 rounded border border-[#27272a] grid grid-cols-3 gap-2 text-xs">
                         <div>
@@ -184,18 +218,18 @@
                             <input type="number" id="invSlots" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dimension X</label>
+                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dim X</label>
                             <input type="number" id="invX" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                         <div>
-                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dimension Y</label>
+                            <label class="block text-[#a1a1aa] mb-0.5">Matrix Dim Y</label>
                             <input type="number" id="invY" value="0" class="w-full bg-[#18181b] border border-[#27272a] rounded p-1 text-[#f4f4f5]">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="pt-2 mt-auto shrink-0">
+            <div class="pt-2 mt-auto shrink-0 select-none">
                 <button type="submit" id="submitFormBtn" class="w-full bg-[#f38020] hover:bg-[#fa923e] text-black font-bold py-2 rounded transition shadow text-xs uppercase tracking-wider cursor-pointer">
                     Commit Entry to Dataset
                 </button>
@@ -215,14 +249,14 @@
                     <button id="clearAll" class="text-xs text-[#a1a1aa] hover:text-[#f4f4f5] transition cursor-pointer font-medium">Purge All Matrices</button>
                 </div>
                 
-                <div class="relative">
+                <div class="relative select-text">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#52525b] text-xs">🔍</span>
                     <input type="text" id="searchBar" class="w-full bg-[#0f0f11] border border-[#27272a] rounded pl-9 pr-4 py-2 text-xs text-[#f4f4f5] focus:outline-none focus:border-[#f38020] font-mono" placeholder="Filter indexes based on dynamic target ID, descriptive properties, tags...">
                 </div>
             </div>
             
-            <div id="itemList" class="grid grid-cols-1 xl:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 align-top content-start">
-                <div id="emptyState" class="col-span-full text-center text-[#52525b] py-24 text-xs font-mono">
+            <div id="itemList" class="grid grid-cols-1 xl:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1 align-top content-start select-text">
+                <div id="emptyState" class="col-span-full text-center text-[#52525b] py-24 text-xs font-mono select-none">
                     No runtime items map within active cache memory arrays. Pull system files or create profiles to map nodes.
                 </div>
             </div>
@@ -234,7 +268,7 @@
         let itemDataset = [];
         let editingIndex = null;
 
-        // Dynamic Interactive Toggle Setup Configuration Mapping
+        // Configuration Module Visibility Layout Toggles
         const activeToggles = [
             { check: 'includeCore', target: 'coreFields' },
             { check: 'includeFarming', target: 'farmingFields' },
@@ -247,10 +281,10 @@
             });
         });
 
-        // Search Bar Event Router Hook
+        // Search Scanner Event Hook
         document.getElementById('searchBar').addEventListener('input', () => renderItems());
 
-        // Standard Reset Routines
+        // Reset Interface Configuration Matrices Cleanly
         function resetFormState() {
             editingIndex = null;
             document.getElementById('itemForm').reset();
@@ -264,12 +298,12 @@
             document.getElementById('buyPrice').value = "-1";
             document.getElementById('sellPrice').value = "-1";
             
-            document.querySelectorAll('.item-card').forEach(card => card.classList.remove('border-[#f38020]', 'bg-[#27272a]/30'));
+            document.querySelectorAll('.item-card').forEach(card => card.classList.remove('border-[#f38020]', 'bg-[#27272a]/20'));
         }
 
         document.getElementById('cancelEditBtn').addEventListener('click', () => resetFormState());
 
-        // Virtual DOM Tree Mapper System Renderer
+        // Virtual Element Layout Array Matrix Renderer
         function renderItems() {
             const container = document.getElementById('itemList');
             const placeholder = document.getElementById('emptyState');
@@ -317,7 +351,7 @@
                         <div class="text-[10px] text-[#a1a1aa] font-mono mt-1">B: ${item.buy_price ?? -1} / S: ${item.sell_price ?? -1}</div>
                         <div class="flex flex-wrap gap-1 mt-2">${markupTags}</div>
                     </div>
-                    <button data-delete="${originalIndex}" class="absolute top-1.5 right-1.5 text-[#52525b] hover:text-red-400 font-bold text-sm transition px-1 z-10 cursor-pointer">&times;</button>
+                    <button data-delete="${originalIndex}" class="absolute top-1.5 right-1.5 text-[#52525b] hover:text-red-400 font-bold text-sm transition px-1 z-10 cursor-pointer select-none group-hover:text-[#a1a1aa]">&times;</button>
                 `;
 
                 nodeCard.addEventListener('click', (e) => {
@@ -333,7 +367,7 @@
             });
         }
 
-        // Element Mutation Data Loader Routine
+        // Deep Copy Element Context Map Loader
         function loadTargetToConsole(index) {
             resetFormState();
             editingIndex = index;
@@ -358,14 +392,19 @@
 
             const statsBlock = record.stats || {};
 
-            if ('protection' in statsBlock || 'blast_protection' in statsBlock || 'speed' in statsBlock) {
+            // Restore Combat & Core Fields Map
+            if ('protection' in statsBlock || 'blast_protection' in statsBlock || 'speed' in statsBlock || 'range' in statsBlock || 'dps' in statsBlock || 'fire_rate' in statsBlock) {
                 document.getElementById('includeCore').checked = true;
                 document.getElementById('coreFields').classList.remove('hidden');
                 document.getElementById('statProt').value = statsBlock.protection ?? 0;
                 document.getElementById('statBlast').value = statsBlock.blast_protection ?? 0;
                 document.getElementById('statSpeed').value = statsBlock.speed ?? 0;
+                document.getElementById('statRange').value = statsBlock.range ?? 0;
+                document.getElementById('statDps').value = statsBlock.dps ?? 0;
+                document.getElementById('statFireRate').value = statsBlock.fire_rate ?? 0;
             }
 
+            // Restore Agricultural Cultivation Configs
             if ('grow_time' in statsBlock || 'harvest_yield' in statsBlock || 'obtained_from' in statsBlock) {
                 document.getElementById('includeFarming').checked = true;
                 document.getElementById('farmingFields').classList.remove('hidden');
@@ -374,16 +413,24 @@
                 document.getElementById('farmSource').value = statsBlock.obtained_from || '';
             }
 
-            if (statsBlock.damage && statsBlock.damage.player) {
+            // Restore Expanded Target Damage Config Matrix Nodes
+            if (statsBlock.damage) {
                 document.getElementById('includeDamage').checked = true;
                 document.getElementById('damageFields').classList.remove('hidden');
-                const targetPlayer = statsBlock.damage.player;
-                document.getElementById('dmgHead').value = targetPlayer.head ?? 0;
-                document.getElementById('dmgBody').value = targetPlayer.body ?? 0;
-                document.getElementById('dmgLegs').value = targetPlayer.legs ?? 0;
-                document.getElementById('dmgHands').value = targetPlayer.hands ?? 0;
+                
+                if (statsBlock.damage.player) {
+                    const targetPlayer = statsBlock.damage.player;
+                    document.getElementById('dmgHead').value = targetPlayer.head ?? 0;
+                    document.getElementById('dmgBody').value = targetPlayer.body ?? 0;
+                    document.getElementById('dmgLegs').value = targetPlayer.legs ?? 0;
+                    document.getElementById('dmgHands').value = targetPlayer.hands ?? 0;
+                }
+                document.getElementById('dmgAnimal').value = statsBlock.damage.animal ?? 0;
+                document.getElementById('dmgZombie').value = statsBlock.damage.zombie ?? 0;
+                document.getElementById('dmgStructure').value = statsBlock.damage.structures ?? 0;
             }
 
+            // Restore Internal Storage Area Matrices
             if (statsBlock.inventory) {
                 document.getElementById('includeInv').checked = true;
                 document.getElementById('invFields').classList.remove('hidden');
@@ -409,7 +456,7 @@
             }
         });
 
-        // Form Submit Execution Mapping Pipeline
+        // Serialization Package Builder Compiler
         document.getElementById('itemForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const compiledStats = {};
@@ -418,6 +465,9 @@
                 compiledStats.protection = parseFloat(document.getElementById('statProt').value) || 0.0;
                 compiledStats.blast_protection = parseFloat(document.getElementById('statBlast').value) || 0.0;
                 compiledStats.speed = parseFloat(document.getElementById('statSpeed').value) || 0.0;
+                compiledStats.range = parseFloat(document.getElementById('statRange').value) || 0.0;
+                compiledStats.dps = parseInt(document.getElementById('statDps').value) || 0;
+                compiledStats.fire_rate = parseFloat(document.getElementById('statFireRate').value) || 0.0;
             }
 
             if (document.getElementById('includeFarming').checked) {
@@ -433,7 +483,10 @@
                         body: parseInt(document.getElementById('dmgBody').value) || 0,
                         legs: parseInt(document.getElementById('dmgLegs').value) || 0,
                         hands: parseInt(document.getElementById('dmgHands').value) || 0
-                    }
+                    },
+                    animal: parseInt(document.getElementById('dmgAnimal').value) || 0,
+                    zombie: parseInt(document.getElementById('dmgZombie').value) || 0,
+                    structures: parseInt(document.getElementById('dmgStructure').value) || 0
                 };
             }
 
@@ -473,7 +526,7 @@
             renderItems();
         });
 
-        // JSON Import Processing File Engine Reader
+        // Local Storage File System Core Stream Reader
         document.getElementById('importJson').addEventListener('change', (e) => {
             const rawTargetFile = e.target.files[0];
             if (!rawTargetFile) return;
@@ -496,19 +549,21 @@
             trackingReader.readAsText(rawTargetFile);
         });
 
-        // Safe Micro-Streaming Preflight Bypassing System Cache Network Requester
+        // Safe Micro-Streaming Preflight Bypassing Network Request Engine
         document.getElementById('loadLatest').addEventListener('click', async () => {
             const activationBtn = document.getElementById('loadLatest');
             const placeholderFallbackText = activationBtn.innerHTML;
             
-            activationBtn.innerHTML = "⏳ Synchronization Stream Active...";
+            activationBtn.innerHTML = "⏳ Connecting Vector Stream...";
             activationBtn.disabled = true;
 
-            const targetSourceUri = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?t=${Date.now()}`;
+            // Appending runtime ticks directly to URL prevents client browser proxy cache storage without causing CORS preflights
+            const targetSourceUri = `https://raw.githubusercontent.com/NylexLifeRP/item_images/refs/heads/main/items.json?nocache=${Date.now()}`;
 
             try {
-                const cloudstreamResponse = await fetch(targetSourceUri, { method: 'GET', cache: 'no-store' });
-                if (!cloudstreamResponse.ok) throw new Error(`Network layer exception status response: ${cloudstreamResponse.status}`);
+                // Stripped down request footprint avoids matching 403 authorization rules
+                const cloudstreamResponse = await fetch(targetSourceUri);
+                if (!cloudstreamResponse.ok) throw new Error(`Server returned HTTP state code: ${cloudstreamResponse.status}`);
                 
                 const responsePayloadArray = await cloudstreamResponse.json();
 
@@ -516,7 +571,7 @@
                     itemDataset = [...itemDataset, ...responsePayloadArray];
                     renderItems();
                 } else {
-                    alert("Stream mapping error: Server returned object configuration rather than standard collection array.");
+                    alert("Mapping mismatch Exception: Input signature didn't decode to systemic Node Collection Array.");
                 }
             } catch (error) {
                 console.error(error);
@@ -527,7 +582,7 @@
             }
         });
 
-        // Export Payload Direct Disk Stream Engine Serialization Writer
+        // Direct File Exporter System Serialization Writer
         document.getElementById('exportJson').addEventListener('click', () => {
             if (itemDataset.length === 0) {
                 alert("Runtime workspace arrays contain no active profiles to compile.");
